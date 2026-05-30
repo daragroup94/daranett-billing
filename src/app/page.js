@@ -32,8 +32,64 @@ export default function Dashboard() {
   const [recentInvoices, setRecentInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [telegramSettings, setTelegramSettings] = useState({
+    telegramBotToken: '',
+    telegramChatId: ''
+  });
+  const [saveSettingsLoading, setSaveSettingsLoading] = useState(false);
+  const [sendTelegramLoading, setSendTelegramLoading] = useState(false);
+
+  const fetchTelegramSettings = async () => {
+    try {
+      const res = await fetch('/api/settings');
+      if (res.ok) {
+        const data = await res.json();
+        setTelegramSettings({
+          telegramBotToken: data.telegramBotToken || '',
+          telegramChatId: data.telegramChatId || ''
+        });
+      }
+    } catch (err) {
+      console.error('Failed to load Telegram settings:', err);
+    }
+  };
+
+  const handleSaveSettings = async (e) => {
+    e.preventDefault();
+    setSaveSettingsLoading(true);
+    try {
+      const res = await fetch('/api/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(telegramSettings)
+      });
+      if (!res.ok) throw new Error('Gagal menyimpan pengaturan');
+      alert('Pengaturan Telegram berhasil disimpan!');
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setSaveSettingsLoading(false);
+    }
+  };
+
+  const handleSendTelegram = async () => {
+    setSendTelegramLoading(true);
+    try {
+      const res = await fetch('/api/telegram/send', {
+        method: 'POST'
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Gagal mengirim telegram');
+      alert(data.message || 'Laporan tunggakan berhasil dikirim ke Telegram!');
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setSendTelegramLoading(false);
+    }
+  };
 
   const fetchDashboardData = async () => {
+    fetchTelegramSettings();
     try {
       setLoading(true);
       setError(null);
@@ -381,6 +437,69 @@ export default function Dashboard() {
             </table>
           )}
         </div>
+      </section>
+
+      {/* Telegram Configuration Settings Panel */}
+      <section className="panel-card" style={{ marginTop: '2rem' }}>
+        <div className="panel-header" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem' }}>
+          <h2 className="panel-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span style={{ color: '#0ea5e9' }}>⚙️</span> Integrasi Telegram Bot (Laporan Tunggakan)
+          </h2>
+        </div>
+
+        <form onSubmit={handleSaveSettings} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', padding: '0.5rem 0' }}>
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+            Masukkan Kredensial Telegram Bot Anda agar sistem dapat mengirimkan daftar pelanggan yang menunggak secara otomatis (harian) atau manual ke chat grup/pribadi Telegram Anda.
+          </p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+            <div className="form-group">
+              <label className="form-label">Telegram Bot Token</label>
+              <input 
+                type="text" 
+                placeholder="123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ" 
+                value={telegramSettings.telegramBotToken} 
+                onChange={(e) => setTelegramSettings(prev => ({ ...prev, telegramBotToken: e.target.value }))}
+                className="form-input"
+                style={{ width: '100%' }}
+              />
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block', marginTop: '0.25rem' }}>
+                Token Bot Telegram yang diperoleh dari <strong>@BotFather</strong>.
+              </span>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Telegram Chat ID / Group ID</label>
+              <input 
+                type="text" 
+                placeholder="-1001234567890 atau 12345678" 
+                value={telegramSettings.telegramChatId} 
+                onChange={(e) => setTelegramSettings(prev => ({ ...prev, telegramChatId: e.target.value }))}
+                className="form-input"
+                style={{ width: '100%' }}
+              />
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block', marginTop: '0.25rem' }}>
+                Chat ID tujuan laporan (bisa ID grup atau ID pribadi. Dapatkan via <strong>@userinfobot</strong>).
+              </span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+            <button 
+              type="button" 
+              onClick={handleSendTelegram}
+              disabled={sendTelegramLoading || !telegramSettings.telegramBotToken || !telegramSettings.telegramChatId}
+              className="btn btn-secondary" 
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(14, 165, 233, 0.1)', color: '#0ea5e9', border: '1px solid rgba(14, 165, 233, 0.2)' }}
+            >
+              {sendTelegramLoading ? <RefreshCw className="animate-spin" size={16} /> : '⚡'} Kirim Laporan Sekarang
+            </button>
+            
+            <button type="submit" className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }} disabled={saveSettingsLoading}>
+              {saveSettingsLoading ? <RefreshCw className="animate-spin" size={16} /> : '💾'} Simpan Kredensial
+            </button>
+          </div>
+        </form>
       </section>
     </>
   );

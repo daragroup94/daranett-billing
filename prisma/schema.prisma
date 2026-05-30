@@ -54,3 +54,11 @@ model Invoice {
 
   @@unique([customerId, month])
 }
+
+model SystemSettings {
+  id               String   @id @default("default")
+  telegramBotToken String   @default("")
+  telegramChatId   String   @default("")
+  lastSentDate     String   @default("")
+  updatedAt        DateTime @updatedAt
+}
