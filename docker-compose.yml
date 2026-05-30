@@ -1,0 +1,55 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: daranett-db
+    restart: always
+    environment:
+      POSTGRES_USER: daranett
+      POSTGRES_PASSWORD: daranett123
+      POSTGRES_DB: daranett_billing
+      TZ: Asia/Jakarta
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      my-net:
+        ipv4_address: 10.204.0.100
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: daranett-app
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://daranett:daranett123@db:5432/daranett_billing?schema=public
+      NODE_ENV: production
+      TZ: Asia/Jakarta
+    expose:
+      - "3000"
+    labels:
+      - "traefik.enable=true"
+      # HTTP Router
+      - "traefik.http.routers.daranett.entrypoints=web"
+      - "traefik.http.routers.daranett.rule=Host(`daranett.demo.daragroup.cloud`)"
+      - "traefik.http.middlewares.daranett-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.daranett.middlewares=daranett-https-redirect"
+      # HTTPS Router
+      - "traefik.http.routers.daranett-secure.entrypoints=websecure"
+      - "traefik.http.routers.daranett-secure.rule=Host(`daranett.demo.daragroup.cloud`)"
+      - "traefik.http.routers.daranett-secure.tls=true"
+      - "traefik.http.routers.daranett-secure.tls.certresolver=cloudflare"
+      # Loadbalancer Service Port
+      - "traefik.http.services.daranett.loadbalancer.server.port=3000"
+    networks:
+      my-net:
+        ipv4_address: 10.204.0.101
+
+volumes:
+  pgdata:
+    driver: local
+
+networks:
+  my-net:
+    external: true

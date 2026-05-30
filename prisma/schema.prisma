@@ -1,0 +1,56 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Customer {
+  id             String    @id @default(uuid())
+  name           String
+  phone          String
+  address        String
+  ipAddress      String?
+  pppoeUsername  String?
+  pppoePassword  String?
+  dueDate        Int       // Day of month, e.g., 1 to 31
+  dueTime        String    @default("10:00") // Due time, e.g., "10:00"
+  discount       Float     @default(0)       // Monthly recurring discount/fee reduction
+  status         String    // "ACTIVE" or "SUSPENDED" or "GRACE"
+  packageId      String
+  package        Package   @relation(fields: [packageId], references: [id])
+  invoices       Invoice[]
+  joinDate       DateTime  @default(now())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Package {
+  id            String     @id @default(uuid())
+  name          String
+  speedUpload   Int        // Mbps
+  speedDownload Int        // Mbps
+  price         Float      // Price in Rupiah
+  description   String?
+  customers     Customer[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Invoice {
+  id            String    @id @default(uuid())
+  customerId    String
+  customer      Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  month         String    // format "YYYY-MM", e.g., "2026-05"
+  amount        Float     // Base package price
+  discount      Float     @default(0) // Discount applied to this specific invoice
+  status        String    // "PAID" or "UNPAID"
+  paymentDate   DateTime?
+  paymentMethod String?   // "CASH", "TRANSFER", "QRIS"
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([customerId, month])
+}
