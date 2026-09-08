@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-export function middleware(request) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const session = request.cookies.get('daranett_session')?.value;
 
@@ -33,7 +34,6 @@ export function middleware(request) {
   return NextResponse.next();
 }
 
-// Apply middleware to all matching paths
 export const config = {
   matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 };

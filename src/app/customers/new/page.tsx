@@ -160,7 +160,7 @@ export default function NewCustomerPage() {
                 value={form.address} 
                 onChange={handleInputChange} 
                 className="form-textarea" 
-                rows="2"
+                rows={2}
                 placeholder="Contoh: Jl. Merdeka No. 45, RT 02 / RW 05"
                 required
               />

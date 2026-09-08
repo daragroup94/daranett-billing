@@ -1,5 +1,10 @@
-export default function rateLimit({ interval = 60 * 1000, uniqueTokenPerInterval = 500 } = {}) {
-  const tokenCounts = new Map();
+export interface RateLimitOptions {
+  interval?: number;
+  uniqueTokenPerInterval?: number;
+}
+
+export default function rateLimit({ interval = 60 * 1000, uniqueTokenPerInterval = 500 }: RateLimitOptions = {}) {
+  const tokenCounts = new Map<string, number>();
 
   // Periodically clean up old entries
   const cleanup = setInterval(() => {
@@ -12,7 +17,7 @@ export default function rateLimit({ interval = 60 * 1000, uniqueTokenPerInterval
   }
 
   return {
-    check(limit, token) {
+    check(limit: number, token: string): Promise<void> {
       return new Promise((resolve, reject) => {
         const currentCount = tokenCounts.get(token) || 0;
 

@@ -253,7 +253,7 @@ export async function sendTelegramOverdueReport(force = false) {
       const dateStrForPDF = currentDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
       const appUrl = 'https://billing.access.daragroup.cloud';
 
-      const pdfBuffer = await generateBillingPDF({
+      const pdfBuffer = (await generateBillingPDF({
         dateStr: dateStrForPDF,
         dueTodayCustomers,
         overdueCustomers,
@@ -265,7 +265,7 @@ export async function sendTelegramOverdueReport(force = false) {
         overdueCount,
         formatRupiah,
         getReadableMonth,
-      });
+      })) as Buffer;
       console.log(`[Telegram-Billing] PDF generated successfully (${pdfBuffer.length} bytes)`);
 
       // Build the summary message caption
@@ -284,7 +284,7 @@ export async function sendTelegramOverdueReport(force = false) {
       const telegramUrl = `https://api.telegram.org/bot${settings.telegramBotToken}/sendDocument`;
       const pdfFormData = new FormData();
       pdfFormData.append('chat_id', settings.telegramChatId);
-      const pdfBlob = new Blob([pdfBuffer], { type: 'application/pdf' });
+      const pdfBlob = new Blob([new Uint8Array(pdfBuffer)], { type: 'application/pdf' });
       pdfFormData.append('document', pdfBlob, `laporan_penagihan_${todayStr}.pdf`);
       pdfFormData.append('caption', caption);
       pdfFormData.append('parse_mode', 'Markdown');

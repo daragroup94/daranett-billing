@@ -26,8 +26,17 @@ export async function GET(request) {
       orderBy: { month: 'asc' },
     });
 
+    interface MonthStat {
+      month: string;
+      totalInvoices: number;
+      paidCount: number;
+      unpaidCount: number;
+      totalRevenue: number;
+      totalUnpaid: number;
+    }
+
     // Group by month
-    const monthMap = {};
+    const monthMap: Record<string, MonthStat> = {};
 
     for (const invoice of invoices) {
       if (!monthMap[invoice.month]) {

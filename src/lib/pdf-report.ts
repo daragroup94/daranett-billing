@@ -163,7 +163,7 @@ export async function generateBillingPDF({
       // ══════════════════════════════════════════
 
       // Table columns definition (landscape A4 has ~760 usable width)
-      const columns = [
+      const columns: Array<{ label: string; width: number; align: 'center' | 'left' | 'right' | 'justify' }> = [
         { label: 'No', width: 30, align: 'center' },
         { label: 'Nama Pelanggan', width: 130, align: 'left' },
         { label: 'No. WA', width: 95, align: 'left' },

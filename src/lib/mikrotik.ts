@@ -1,9 +1,15 @@
 import prisma from './db';
+import { SystemSettings } from '@/types';
 
 /**
  * Sends a request to Mikrotik RouterOS REST API.
  */
-async function callRouterOS(settings, endpoint, method = 'GET', body = null) {
+async function callRouterOS(
+  settings: SystemSettings,
+  endpoint: string,
+  method: string = 'GET',
+  body: Record<string, any> | null = null
+): Promise<any> {
   const { mikrotikHost, mikrotikPort, mikrotikUsername, mikrotikPassword } = settings;
   
   if (!mikrotikHost || !mikrotikUsername) {
@@ -15,7 +21,7 @@ async function callRouterOS(settings, endpoint, method = 'GET', body = null) {
   const url = `http://${cleanHost}:${mikrotikPort || 80}/rest${endpoint}`;
   
   const auth = Buffer.from(`${mikrotikUsername}:${mikrotikPassword}`).toString('base64');
-  const headers = {
+  const headers: Record<string, string> = {
     'Authorization': `Basic ${auth}`,
     'Content-Type': 'application/json'
   };
@@ -24,7 +30,7 @@ async function callRouterOS(settings, endpoint, method = 'GET', body = null) {
   const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout
 
   try {
-    const options = {
+    const options: RequestInit = {
       method,
       headers,
       signal: controller.signal
@@ -52,10 +58,11 @@ async function callRouterOS(settings, endpoint, method = 'GET', body = null) {
 
 /**
  * Synchronize customer status to Mikrotik (PPPoE Secret)
- * @param {Object} customer
- * @param {string} status - ACTIVE, SUSPENDED
  */
-export async function syncCustomerToMikrotik(customer, status) {
+export async function syncCustomerToMikrotik(
+  customer: { name: string; pppoeUsername?: string | null },
+  status: string
+): Promise<boolean> {
   try {
     const settings = await prisma.systemSettings.findUnique({
       where: { id: 'default' }
@@ -85,14 +92,14 @@ export async function syncCustomerToMikrotik(customer, status) {
 
     // 1. Get Secret in Mikrotik to check if it exists
     console.log(`[Mikrotik] Syncing ${username} (Status: ${status})...`);
-    let secrets = [];
+    let secrets: any[] = [];
     try {
       secrets = await callRouterOS(settings, `/ppp/secret?name=${username}`, 'GET');
-    } catch (e) {
+    } catch (e: any) {
       await prisma.systemLog.create({
         data: {
           action: 'MIKROTIK_ERROR',
-          message: `Gagal mencari secret PPPoE ${username} di Mikrotik: ${e.message}`
+          message: `Gagal mencari secret PPPoE ${username} di Mikrotik: ${e?.message || e}`
         }
       });
       return false;
@@ -138,11 +145,11 @@ export async function syncCustomerToMikrotik(customer, status) {
         }
       });
       return true;
-    } catch (err) {
+    } catch (err: any) {
       await prisma.systemLog.create({
         data: {
           action: 'MIKROTIK_ERROR',
-          message: `Gagal memperbarui status secret PPPoE ${username} di Mikrotik: ${err.message}`
+          message: `Gagal memperbarui status secret PPPoE ${username} di Mikrotik: ${err?.message || err}`
         }
       });
       return false;

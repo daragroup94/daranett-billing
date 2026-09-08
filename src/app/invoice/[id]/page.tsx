@@ -65,7 +65,7 @@ export default function PublicInvoicePage() {
         : 'https://app.sandbox.midtrans.com/snap/snap.js';
 
       const scriptId = 'midtrans-snap-script';
-      let script = document.getElementById(scriptId);
+      let script = document.getElementById(scriptId) as HTMLScriptElement | null;
 
       if (!script) {
         script = document.createElement('script');
@@ -85,9 +85,10 @@ export default function PublicInvoicePage() {
   const handleOnlinePayment = () => {
     if (!midtrans || !midtrans.snapToken) return;
 
-    if (window.snap) {
+    const snap = typeof window !== 'undefined' ? (window as any).snap : null;
+    if (snap) {
       setPaying(true);
-      window.snap.pay(midtrans.snapToken, {
+      snap.pay(midtrans.snapToken, {
         onSuccess: function (result) {
           console.log('[Midtrans] Payment success:', result);
           setPaymentSuccess(true);
@@ -144,7 +145,7 @@ export default function PublicInvoicePage() {
     const element = document.getElementById('invoice-card');
     if (!element) return;
 
-    const opt = {
+    const opt: any = {
       margin:       [0.5, 0.5, 0.5, 0.5],
       filename:     `Invoice_DaraNet_${invoice.customer.name}_${invoice.month}.pdf`,
       image:        { type: 'jpeg', quality: 0.98 },
@@ -153,7 +154,7 @@ export default function PublicInvoicePage() {
     };
 
     // Load and run html2pdf
-    import('html2pdf.js').then((html2pdf) => {
+    import('html2pdf.js').then((html2pdf: any) => {
       html2pdf.default().set(opt).from(element).save();
     }).catch(err => {
       console.error('Failed to load html2pdf:', err);
@@ -471,12 +472,12 @@ export default function PublicInvoicePage() {
                     transition: 'var(--transition-smooth)'
                   }}
                   onMouseEnter={(e) => {
-                    e.target.style.transform = 'translateY(-2px)';
-                    e.target.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.4)';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.4)';
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.transform = 'translateY(0)';
-                    e.target.style.boxShadow = '0 4px 15px rgba(16, 185, 129, 0.25)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 4px 15px rgba(16, 185, 129, 0.25)';
                   }}
                 >
                   {paying ? (

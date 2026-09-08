@@ -222,7 +222,7 @@ export default function BillingPage() {
       const invoiceTotal = selectedInvoice ? selectedInvoice.amount - (selectedInvoice.discount || 0) : 0;
       const amountPaid = parseFloat(payAmount);
 
-      const payload = {
+      const payload: Record<string, any> = {
         status: 'PAID',
         paymentMethod: payMethod,
         notes: payNotes

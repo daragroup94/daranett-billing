@@ -1,9 +1,11 @@
 import './globals.css';
 import Sidebar from '@/components/Sidebar';
+import { Metadata } from 'next';
+import React from 'react';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'DaraNet ISP - Customer & Billing Management',
   description: 'Aplikasi Manajemen Pelanggan & Billing RTRW Net DaraNet',
 };
@@ -24,7 +26,7 @@ const themeInitScript = `
   })();
 `;
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id" suppressHydrationWarning>
       <head>

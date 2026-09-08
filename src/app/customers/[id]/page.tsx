@@ -170,7 +170,7 @@ export default function CustomerDetailPage() {
       const customerUnpaidCount = unpaidInvoices.length;
       const amountPaid = parseFloat(payAmount);
 
-      const payload = {
+      const payload: Record<string, any> = {
         status: 'PAID',
         paymentMethod: payMethod,
         notes: payNotes
@@ -353,7 +353,7 @@ export default function CustomerDetailPage() {
               <div className="form-row">
                 <div className="form-group">
                   <label className="form-label">Alamat Lengkap *</label>
-                  <textarea name="address" value={editForm.address} onChange={handleEditChange} className="form-textarea" rows="2" required />
+                  <textarea name="address" value={editForm.address} onChange={handleEditChange} className="form-textarea" rows={2} required />
                 </div>
                 <div className="form-group" style={{ maxWidth: '250px' }}>
                   <label className="form-label">Tanggal Aktif / Gabung *</label>

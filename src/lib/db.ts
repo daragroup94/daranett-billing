@@ -4,7 +4,9 @@ const prismaClientSingleton = () => {
   return new PrismaClient();
 };
 
-const globalForPrisma = globalThis;
+const globalForPrisma = globalThis as unknown as {
+  prismaGlobal: PrismaClient | undefined;
+};
 
 const prisma = globalForPrisma.prismaGlobal ?? prismaClientSingleton();
 

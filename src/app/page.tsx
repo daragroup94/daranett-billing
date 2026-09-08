@@ -161,7 +161,7 @@ export default function Dashboard() {
         overdueCustomers
       });
 
-      const sortedByRecency = [...invoicesData].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      const sortedByRecency = [...invoicesData].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       setRecentInvoices(sortedByRecency.slice(0, 5));
     } catch (err) {
       console.error(err);

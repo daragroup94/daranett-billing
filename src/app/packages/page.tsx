@@ -220,7 +220,7 @@ export default function PackagesPage() {
                 value={form.description} 
                 onChange={handleInputChange} 
                 className="form-textarea" 
-                rows="2"
+                rows={2}
                 placeholder="Tuliskan keterangan detail paket..."
               />
             </div>

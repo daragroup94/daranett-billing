@@ -5,11 +5,12 @@ import { useParams, useRouter } from 'next/navigation';
 import { Printer, ArrowLeft, RefreshCw, CheckCircle2, AlertCircle, Download } from 'lucide-react';
 
 export default function PrintInvoicePage() {
-  const { id } = useParams();
+  const params = useParams();
+  const id = (params?.id as string) || '';
   const router = useRouter();
-  const [invoice, setInvoice] = useState(null);
+  const [invoice, setInvoice] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [pdfLoading, setPdfLoading] = useState(false);
 
   const handleExportPDF = async () => {
@@ -17,14 +18,14 @@ export default function PrintInvoicePage() {
       setPdfLoading(true);
       const html2pdf = (await import('html2pdf.js')).default;
       const element = document.querySelector('.print-container');
-      const opt = {
+      const opt: any = {
         margin:       10,
         filename:     `INV-${invoice?.month || ''}-${id.substring(0, 5).toUpperCase()}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2.5, useCORS: true, logging: false },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
-      await html2pdf().from(element).set(opt).save();
+      await (html2pdf as any)().from(element).set(opt).save();
     } catch (err) {
       console.error('Gagal mengekspor PDF:', err);
       alert('Gagal mengekspor PDF. Silakan coba cetak manual.');
