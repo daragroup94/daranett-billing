@@ -2,9 +2,12 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 import { syncCustomerToMikrotik } from '@/lib/mikrotik';
 
-export async function GET(request, { params }) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> | { id: string } }
+) {
   try {
-    const { id } = params;
+    const { id } = await Promise.resolve(params);
     const invoice = await prisma.invoice.findUnique({
       where: { id },
       include: {
@@ -27,9 +30,12 @@ export async function GET(request, { params }) {
   }
 }
 
-export async function PUT(request, { params }) {
+export async function PUT(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> | { id: string } }
+) {
   try {
-    const { id } = params;
+    const { id } = await Promise.resolve(params);
     const data = await request.json();
     const { status, paymentMethod, paidAmount, rollover, notes, promiseDate } = data; // status = 'PAID' or 'UNPAID'
 
@@ -187,9 +193,12 @@ export async function PUT(request, { params }) {
   }
 }
 
-export async function DELETE(request, { params }) {
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> | { id: string } }
+) {
   try {
-    const { id } = params;
+    const { id } = await Promise.resolve(params);
     await prisma.invoice.delete({
       where: { id }
     });

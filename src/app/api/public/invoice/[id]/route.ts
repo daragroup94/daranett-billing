@@ -2,9 +2,12 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 import { syncCustomerToMikrotik } from '@/lib/mikrotik';
 
-export async function GET(request, { params }) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> | { id: string } }
+) {
   try {
-    const { id } = params;
+    const { id } = await Promise.resolve(params);
 
     const invoice = await prisma.invoice.findUnique({
       where: { id },

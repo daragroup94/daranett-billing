@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 
-export async function GET(request, { params }) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> | { id: string } }
+) {
   try {
-    const { id } = params;
+    const { id } = await Promise.resolve(params);
     const item = await prisma.package.findUnique({
       where: { id },
     });
@@ -16,9 +19,12 @@ export async function GET(request, { params }) {
   }
 }
 
-export async function PUT(request, { params }) {
+export async function PUT(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> | { id: string } }
+) {
   try {
-    const { id } = params;
+    const { id } = await Promise.resolve(params);
     const data = await request.json();
     const { name, speedUpload, speedDownload, price, description } = data;
 
@@ -40,9 +46,12 @@ export async function PUT(request, { params }) {
   }
 }
 
-export async function DELETE(request, { params }) {
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> | { id: string } }
+) {
   try {
-    const { id } = params;
+    const { id } = await Promise.resolve(params);
 
     // Check if there are active customers using this package
     const customerCount = await prisma.customer.count({
