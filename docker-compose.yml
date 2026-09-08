@@ -32,7 +32,7 @@ services:
       - "traefik.enable=true"
       # HTTP Router
       - "traefik.http.routers.daranett.entrypoints=web"
-      - "traefik.http.routers.daranett.rule=Host(`billing.accsess.daragroup.cloud`)"
+      - "traefik.http.routers.daranett.rule=Host(`billing.access.daragroup.cloud`)"
       - "traefik.http.middlewares.daranett-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.daranett.middlewares=daranett-https-redirect"
       # HTTPS Router
