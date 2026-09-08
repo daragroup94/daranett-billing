@@ -51,7 +51,7 @@ export default function LoginPage() {
       top: 0,
       left: 0,
       zIndex: 9999,
-      backgroundColor: '#0b0f19',
+      backgroundColor: 'var(--bg-primary)',
       backgroundImage: `
         radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.08) 0px, transparent 50%),
         radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.08) 0px, transparent 50%)
@@ -61,12 +61,12 @@ export default function LoginPage() {
       <div style={{
         width: '100%',
         maxWidth: '420px',
-        background: 'rgba(22, 30, 47, 0.65)',
+        background: 'var(--glass-bg)',
         backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255, 255, 255, 0.08)',
+        border: '1px solid var(--border-color)',
         borderRadius: '24px',
         padding: '2.5rem',
-        boxShadow: '0 20px 50px rgba(0, 0, 0, 0.4)',
+        boxShadow: 'var(--shadow-lg)',
         display: 'flex',
         flexDirection: 'column',
         gap: '2rem'
@@ -74,7 +74,7 @@ export default function LoginPage() {
         {/* Brand Header */}
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{
-            background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)',
+            background: 'var(--gradient-primary)',
             color: '#fff',
             width: '56px',
             height: '56px',
@@ -92,7 +92,7 @@ export default function LoginPage() {
           <h1 style={{
             fontSize: '1.8rem',
             fontWeight: '800',
-            background: 'linear-gradient(to right, #fff, #94a3b8)',
+            background: 'linear-gradient(to right, var(--text-heading), var(--text-secondary))',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             letterSpacing: '1px',
@@ -100,7 +100,7 @@ export default function LoginPage() {
           }}>
             DARANETT
           </h1>
-          <p style={{ color: '#94a3b8', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: '600' }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: '600' }}>
             Customer Billing Panel
           </p>
         </div>
@@ -109,10 +109,10 @@ export default function LoginPage() {
           {error && (
             <div style={{
               background: 'rgba(244, 63, 94, 0.1)',
-              border: '1px solid #f43f5e',
+              border: '1px solid var(--accent-rose)',
               padding: '0.85rem 1rem',
               borderRadius: '12px',
-              color: '#f43f5e',
+              color: 'var(--accent-rose)',
               display: 'flex',
               alignItems: 'center',
               gap: '0.75rem',
@@ -124,7 +124,7 @@ export default function LoginPage() {
           )}
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <label style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: '500' }}>Username Admin</label>
+            <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: '500' }}>Username Admin</label>
             <input
               type="text"
               value={username}
@@ -133,29 +133,29 @@ export default function LoginPage() {
               required
               disabled={loading}
               style={{
-                background: 'rgba(11, 15, 25, 0.5)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
+                background: 'var(--input-bg)',
+                border: '1px solid var(--border-color)',
                 borderRadius: '12px',
                 padding: '0.85rem 1rem',
-                color: '#fff',
+                color: 'var(--text-primary)',
                 fontSize: '0.95rem',
                 outline: 'none',
-                transition: 'all 0.3s ease',
+                transition: 'var(--transition-smooth)',
                 width: '100%'
               }}
               onFocus={(e) => {
-                e.target.style.borderColor = '#0ea5e9';
+                e.target.style.borderColor = 'var(--accent-cyan)';
                 e.target.style.boxShadow = '0 0 10px rgba(14, 165, 233, 0.15)';
               }}
               onBlur={(e) => {
-                e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                e.target.style.borderColor = 'var(--border-color)';
                 e.target.style.boxShadow = 'none';
               }}
             />
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <label style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: '500' }}>Password</label>
+            <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: '500' }}>Password</label>
             <input
               type="password"
               value={password}
@@ -164,22 +164,22 @@ export default function LoginPage() {
               required
               disabled={loading}
               style={{
-                background: 'rgba(11, 15, 25, 0.5)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
+                background: 'var(--input-bg)',
+                border: '1px solid var(--border-color)',
                 borderRadius: '12px',
                 padding: '0.85rem 1rem',
-                color: '#fff',
+                color: 'var(--text-primary)',
                 fontSize: '0.95rem',
                 outline: 'none',
-                transition: 'all 0.3s ease',
+                transition: 'var(--transition-smooth)',
                 width: '100%'
               }}
               onFocus={(e) => {
-                e.target.style.borderColor = '#0ea5e9';
+                e.target.style.borderColor = 'var(--accent-cyan)';
                 e.target.style.boxShadow = '0 0 10px rgba(14, 165, 233, 0.15)';
               }}
               onBlur={(e) => {
-                e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                e.target.style.borderColor = 'var(--border-color)';
                 e.target.style.boxShadow = 'none';
               }}
             />
@@ -189,7 +189,7 @@ export default function LoginPage() {
             type="submit"
             disabled={loading}
             style={{
-              background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)',
+              background: 'var(--gradient-primary)',
               color: '#fff',
               border: 'none',
               borderRadius: '12px',
@@ -202,7 +202,7 @@ export default function LoginPage() {
               justifyContent: 'center',
               gap: '0.75rem',
               boxShadow: '0 4px 15px rgba(14, 165, 233, 0.25)',
-              transition: 'all 0.3s ease',
+              transition: 'var(--transition-smooth)',
               marginTop: '0.75rem',
               width: '100%'
             }}
@@ -229,8 +229,8 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div style={{ textAlign: 'center', fontSize: '0.75rem', color: '#64748b', borderTop: '1px solid rgba(255, 255, 255, 0.06)', paddingTop: '1.25rem' }}>
-          Gunakan default credentials <code style={{ color: '#0ea5e9', fontWeight: 'bold' }}>admin / admin</code>
+        <div style={{ textAlign: 'center', fontSize: '0.75rem', color: 'var(--text-muted)', borderTop: '1px solid var(--glass-border)', paddingTop: '1.25rem' }}>
+          Gunakan default credentials <code style={{ color: 'var(--accent-cyan)', fontWeight: 'bold' }}>admin / admin</code>
         </div>
       </div>
     </div>

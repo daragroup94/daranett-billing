@@ -12,12 +12,14 @@ model Customer {
   name           String
   phone          String
   address        String
+  wilayah        String?   // Wilayah / Rute penagihan
   ipAddress      String?
   pppoeUsername  String?
   pppoePassword  String?
   dueDate        Int       // Day of month, e.g., 1 to 31
   dueTime        String    @default("10:00") // Due time, e.g., "10:00"
   discount       Float     @default(0)       // Monthly recurring discount/fee reduction
+  carriedOverDebt Float     @default(0)       // Debt carried over from unpaid parts of previous bills
   status         String    // "ACTIVE" or "SUSPENDED" or "GRACE"
   packageId      String
   package        Package   @relation(fields: [packageId], references: [id])
@@ -49,6 +51,8 @@ model Invoice {
   status        String    // "PAID" or "UNPAID"
   paymentDate   DateTime?
   paymentMethod String?   // "CASH", "TRANSFER", "QRIS"
+  notes         String?   // Custom payment or billing notes
+  promiseDate   DateTime? // Tanggal Janji Bayar
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -56,9 +60,36 @@ model Invoice {
 }
 
 model SystemSettings {
-  id               String   @id @default("default")
-  telegramBotToken String   @default("")
-  telegramChatId   String   @default("")
-  lastSentDate     String   @default("")
-  updatedAt        DateTime @updatedAt
+  id                    String   @id @default("default")
+  telegramBotToken      String   @default("")
+  telegramChatId        String   @default("")
+  lastSentDate          String   @default("")
+  lastSentWaDate        String   @default("")
+  adminPassword         String   @default("admin")
+  fonnteBotToken        String   @default("")
+  fonnteTargetPhone     String   @default("")
+  
+  // Mikrotik Settings
+  mikrotikHost          String   @default("")
+  mikrotikPort          Int      @default(80)
+  mikrotikUsername      String   @default("")
+  mikrotikPassword      String   @default("")
+  mikrotikIsolirProfile String   @default("ISOLIR")
+
+  // Midtrans Settings
+  midtransServerKey     String   @default("")
+  midtransClientKey     String   @default("")
+  midtransIsProduction  Boolean  @default(false)
+
+  // Cron Settings
+  cronToken             String   @default("")
+
+  updatedAt             DateTime @updatedAt
+}
+
+model SystemLog {
+  id        String   @id @default(uuid())
+  action    String
+  message   String
+  createdAt DateTime @default(now())
 }

@@ -16,6 +16,7 @@ export default function NewCustomerPage() {
     name: '',
     phone: '',
     address: '',
+    wilayah: '',
     ipAddress: '',
     pppoeUsername: '',
     pppoePassword: '',
@@ -95,7 +96,7 @@ export default function NewCustomerPage() {
       <header className="top-header">
         <div className="header-title-container">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
-            <Link href="/customers" className="action-btn" style={{ background: 'rgba(255,255,255,0.03)', padding: '0.5rem', borderRadius: 'var(--radius-sm)' }}>
+            <Link href="/customers" className="action-btn" style={{ background: 'var(--hover-overlay)', padding: '0.5rem', borderRadius: 'var(--radius-sm)' }}>
               <ArrowLeft size={18} />
             </Link>
             <h1>Tambah Pelanggan Baru</h1>
@@ -114,7 +115,7 @@ export default function NewCustomerPage() {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           {error && (
-            <div style={{ background: 'rgba(244, 63, 94, 0.1)', border: '1px solid var(--accent-rose)', padding: '1rem', borderRadius: 'var(--radius-sm)', color: 'var(--accent-rose)', display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.9rem' }}>
+            <div style={{ background: 'color-mix(in srgb, var(--accent-rose) 10%, transparent)', border: '1px solid var(--accent-rose)', padding: '1rem', borderRadius: 'var(--radius-sm)', color: 'var(--accent-rose)', display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.9rem' }}>
               <AlertTriangle size={18} />
               <span>{error}</span>
             </div>
@@ -177,49 +178,16 @@ export default function NewCustomerPage() {
                   required
                 />
               </div>
-            </div>
-          </div>
 
-          <hr style={{ border: '0', borderTop: '1px solid var(--border-color)' }} />
-
-          {/* Section 2: Technical Info */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <h3 style={{ fontSize: '1rem', color: 'var(--accent-purple)', fontWeight: '600' }}>Detail Teknis Jaringan (Optional)</h3>
-            
-            <div className="form-row">
               <div className="form-group">
-                <label className="form-label">Static IP Address</label>
+                <label className="form-label">Wilayah / Rute Penagihan</label>
                 <input 
                   type="text" 
-                  name="ipAddress" 
-                  value={form.ipAddress} 
+                  name="wilayah" 
+                  value={form.wilayah} 
                   onChange={handleInputChange} 
                   className="form-input" 
-                  placeholder="Contoh: 192.168.88.50"
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">PPPoE Username</label>
-                <input 
-                  type="text" 
-                  name="pppoeUsername" 
-                  value={form.pppoeUsername} 
-                  onChange={handleInputChange} 
-                  className="form-input" 
-                  placeholder="Contoh: budi_daranett"
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">PPPoE Password</label>
-                <input 
-                  type="password" 
-                  name="pppoePassword" 
-                  value={form.pppoePassword} 
-                  onChange={handleInputChange} 
-                  className="form-input" 
-                  placeholder="••••••••"
+                  placeholder="Contoh: RT 03 / RW 02, Jalan Melati, dsb."
                 />
               </div>
             </div>
@@ -264,9 +232,8 @@ export default function NewCustomerPage() {
                   className="form-select"
                   required
                 >
-                  <option value="ACTIVE">ACTIVE (Aktif)</option>
-                  <option value="GRACE_PERIOD">GRACE PERIOD (Masa Tenggang)</option>
-                  <option value="SUSPENDED">SUSPENDED (Isolir)</option>
+                  <option value="ACTIVE">AKTIF (Aktif)</option>
+                  <option value="SUSPENDED">NONAKTIF (Nonaktif)</option>
                 </select>
               </div>
             </div>
@@ -333,7 +300,7 @@ export default function NewCustomerPage() {
         </form>
       </section>
 
-      <div style={{ display: 'flex', gap: '1rem', background: 'rgba(255,255,255,0.01)', border: '1px solid var(--border-color)', padding: '1.25rem', borderRadius: 'var(--radius-md)', alignItems: 'flex-start', maxWidth: '800px' }}>
+      <div style={{ display: 'flex', gap: '1rem', background: 'var(--hover-overlay)', border: '1px solid var(--border-color)', padding: '1.25rem', borderRadius: 'var(--radius-md)', alignItems: 'flex-start', maxWidth: '800px' }}>
         <Info size={20} style={{ color: 'var(--accent-cyan)', marginTop: '0.1rem' }} />
         <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
           <strong>Info Integrasi Mikrotik:</strong> Data teknis seperti <em>Static IP</em> dan <em>PPPoE credentials</em> mempermudah sinkronisasi otomatis ke Router Mikrotik (API RouterOS) di masa depan. Pastikan data terisi dengan format yang benar.

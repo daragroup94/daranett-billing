@@ -19,7 +19,7 @@ export default function PrintInvoicePage() {
       const element = document.querySelector('.print-container');
       const opt = {
         margin:       10,
-        filename:     `INV-${month}-${id.substring(0, 5).toUpperCase()}.pdf`,
+        filename:     `INV-${invoice?.month || ''}-${id.substring(0, 5).toUpperCase()}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2.5, useCORS: true, logging: false },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -96,29 +96,29 @@ export default function PrintInvoicePage() {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0b0f19', color: '#f8fafc', gap: '1rem', fontFamily: 'var(--font-sans)' }}>
-        <RefreshCw className="animate-spin" size={32} style={{ color: '#0ea5e9' }} />
-        <p style={{ color: '#94a3b8', fontWeight: '500' }}>Menyiapkan dokumen cetak...</p>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: 'var(--bg-primary)', color: 'var(--text-primary)', gap: '1rem', fontFamily: 'var(--font-sans)' }}>
+        <RefreshCw className="animate-spin" size={32} style={{ color: 'var(--accent-cyan)' }} />
+        <p style={{ color: 'var(--text-secondary)', fontWeight: '500' }}>Menyiapkan dokumen cetak...</p>
       </div>
     );
   }
 
   if (error || !invoice) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0b0f19', color: '#f8fafc', gap: '1.5rem', textAlign: 'center', padding: '2rem', fontFamily: 'var(--font-sans)' }}>
-        <AlertCircle size={48} style={{ color: '#f43f5e' }} />
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: 'var(--bg-primary)', color: 'var(--text-primary)', gap: '1.5rem', textAlign: 'center', padding: '2rem', fontFamily: 'var(--font-sans)' }}>
+        <AlertCircle size={48} style={{ color: 'var(--accent-rose)' }} />
         <div>
           <h2 style={{ fontSize: '1.5rem', fontWeight: '700' }}>Gagal Memuat</h2>
-          <p style={{ color: '#94a3b8' }}>{error || 'Tagihan tidak ditemukan'}</p>
+          <p style={{ color: 'var(--text-secondary)' }}>{error || 'Tagihan tidak ditemukan'}</p>
         </div>
-        <button onClick={() => window.close()} className="btn btn-secondary" style={{ background: 'rgba(255,255,255,0.05)', color: '#fff' }}>
+        <button onClick={() => window.close()} className="btn btn-secondary" style={{ background: 'var(--hover-overlay)', color: 'var(--text-primary)' }}>
           Tutup Halaman
         </button>
       </div>
     );
   }
 
-  const { customer, amount, discount, status, month, paymentMethod, paymentDate, createdAt } = invoice;
+  const { customer, amount, discount, status, month, paymentMethod, paymentDate, createdAt, notes } = invoice;
 
   return (
     <div style={{ background: '#fff', color: '#1e293b', minHeight: '100vh', padding: '20px', fontFamily: 'var(--font-sans)', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
@@ -435,6 +435,11 @@ export default function PrintInvoicePage() {
         <div style={{ borderTop: '1px dashed #cbd5e1', paddingTop: '25px', display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '40px' }}>
           <div>
             <h4 style={{ fontSize: '0.8rem', fontWeight: '800', color: '#334155', margin: '0 0 8px 0', letterSpacing: '0.5px' }}>KETERANGAN & CATATAN:</h4>
+            {notes && (
+              <div style={{ background: '#f8fafc', padding: '10px 15px', borderLeft: '3px solid #4f46e5', borderRadius: '4px', marginBottom: '10px', fontSize: '0.8rem', color: '#334155', fontStyle: 'italic' }}>
+                Catatan Petugas: {notes}
+              </div>
+            )}
             <ul style={{ margin: '0', paddingLeft: '15px', fontSize: '0.75rem', color: '#64748b', lineHeight: '1.5' }}>
               <li>Kuitansi/Invoice ini adalah dokumen sah dari DaraNet ISP.</li>
               <li>Pembayaran yang sudah terekam tidak dapat dibatalkan atau dikembalikan.</li>

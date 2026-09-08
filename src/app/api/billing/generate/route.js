@@ -10,10 +10,10 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Format bulan harus YYYY-MM' }, { status: 400 });
     }
 
-    // Get all customers who are ACTIVE or GRACE
+    // Get all customers who are ACTIVE
     const customers = await prisma.customer.findMany({
       where: {
-        status: { in: ['ACTIVE', 'GRACE_PERIOD'] }
+        status: 'ACTIVE'
       },
       include: {
         package: true

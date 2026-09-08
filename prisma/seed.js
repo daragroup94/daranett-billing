@@ -11,31 +11,71 @@ async function main() {
     
     await prisma.package.create({
       data: {
-        name: 'Dara Hemat 10 Mbps',
+        name: 'Lite',
         speedUpload: 5,
-        speedDownload: 10,
-        price: 150000,
-        description: 'Paket hemat bulanan cocok untuk keluarga kecil 2-3 orang'
+        speedDownload: 5,
+        price: 100000,
+        description: 'Cukup untuk browsing & chat harian'
       }
     });
 
     await prisma.package.create({
       data: {
-        name: 'Dara Populer 20 Mbps',
+        name: 'Basic',
         speedUpload: 10,
-        speedDownload: 20,
-        price: 220000,
-        description: 'Paket favorit kecepatan tinggi untuk streaming HD dan game online'
+        speedDownload: 10,
+        price: 125000,
+        description: 'Standar nyaman untuk kerja & belajar'
       }
     });
 
     await prisma.package.create({
       data: {
-        name: 'Dara Ultimate 50 Mbps',
-        speedUpload: 20,
+        name: 'Plus',
+        speedUpload: 15,
+        speedDownload: 15,
+        price: 150000,
+        description: 'Lebih lega untuk streaming & video call'
+      }
+    });
+
+    await prisma.package.create({
+      data: {
+        name: 'Pro',
+        speedUpload: 25,
+        speedDownload: 25,
+        price: 200000,
+        description: 'Andalan untuk kerja dan hiburan keluarga'
+      }
+    });
+
+    await prisma.package.create({
+      data: {
+        name: 'Prime',
+        speedUpload: 35,
+        speedDownload: 35,
+        price: 250000,
+        description: 'Performa unggul, multi-device lancar'
+      }
+    });
+
+    await prisma.package.create({
+      data: {
+        name: 'Ultra',
+        speedUpload: 50,
         speedDownload: 50,
-        price: 350000,
-        description: 'Paket super kencang tanpa kompromi untuk keluarga besar & SOHO'
+        price: 400000,
+        description: 'Kecepatan tinggi untuk kebutuhan berat'
+      }
+    });
+
+    await prisma.package.create({
+      data: {
+        name: 'Max',
+        speedUpload: 100,
+        speedDownload: 100,
+        price: 500000,
+        description: 'Kecepatan maksimal, tanpa kompromi'
       }
     });
 

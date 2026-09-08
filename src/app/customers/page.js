@@ -83,6 +83,7 @@ export default function CustomersPage() {
       c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       c.phone.toLowerCase().includes(searchTerm.toLowerCase()) ||
       c.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (c.wilayah && c.wilayah.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (c.ipAddress && c.ipAddress.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (c.pppoeUsername && c.pppoeUsername.toLowerCase().includes(searchTerm.toLowerCase()));
 
@@ -119,7 +120,7 @@ export default function CustomersPage() {
       <header className="top-header">
         <div className="header-title-container">
           <h1>Daftar Pelanggan</h1>
-          <p>Kelola profil, status isolir, dan detail koneksi jaringan pelanggan DaraNet.</p>
+          <p>Kelola profil, status koneksi, dan detail koneksi jaringan pelanggan DaraNet.</p>
         </div>
         <div className="header-actions">
           <button onClick={fetchData} className="btn btn-secondary">
@@ -157,9 +158,8 @@ export default function CustomersPage() {
                 style={{ width: '150px' }}
               >
                 <option value="">Semua Status</option>
-                <option value="ACTIVE">ACTIVE</option>
-                <option value="GRACE_PERIOD">GRACE PERIOD</option>
-                <option value="SUSPENDED">ISOLIR (SUSPENDED)</option>
+                <option value="ACTIVE">AKTIF</option>
+                <option value="SUSPENDED">NONAKTIF</option>
               </select>
             </div>
 
@@ -215,15 +215,20 @@ export default function CustomersPage() {
                 {filteredCustomers.map((cust) => (
                   <tr key={cust.id}>
                     <td>
-                      <Link href={`/customers/${cust.id}`} style={{ color: '#fff', fontWeight: '600', textDecoration: 'none', fontSize: '1.05rem' }}>
+                      <Link href={`/customers/${cust.id}`} style={{ color: 'var(--text-heading)', fontWeight: '600', textDecoration: 'none', fontSize: '1.05rem' }}>
                         {cust.name}
                       </Link>
+                      {cust.wilayah && (
+                        <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--accent-cyan)', marginTop: '0.15rem', fontWeight: '500' }}>
+                          Wilayah: {cust.wilayah}
+                        </span>
+                      )}
                       <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.15rem' }}>
                         ID: {cust.id.substring(0, 8)}...
                       </span>
                     </td>
                     <td>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#fff', fontSize: '0.85rem', marginBottom: '0.2rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-primary)', fontSize: '0.85rem', marginBottom: '0.2rem' }}>
                         <Phone size={12} style={{ color: 'var(--accent-teal)' }} />
                         {cust.phone}
                       </div>
@@ -263,11 +268,9 @@ export default function CustomersPage() {
                     </td>
                     <td>
                       <span className={`badge ${
-                        cust.status === 'ACTIVE' ? 'badge-active' : 
-                        cust.status === 'SUSPENDED' ? 'badge-suspended' : 'badge-grace'
+                        cust.status === 'ACTIVE' ? 'badge-active' : 'badge-suspended'
                       }`}>
-                        {cust.status === 'ACTIVE' ? 'ACTIVE' : 
-                         cust.status === 'SUSPENDED' ? 'ISOLIR' : 'GRACE'}
+                        {cust.status === 'ACTIVE' ? 'AKTIF' : 'NONAKTIF'}
                       </span>
                     </td>
                     <td>

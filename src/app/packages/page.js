@@ -142,7 +142,7 @@ export default function PackagesPage() {
       </header>
 
       {showForm && (
-        <section className="panel-card" style={{ border: '1px solid var(--accent-cyan)', background: 'rgba(14, 165, 233, 0.03)' }}>
+        <section className="panel-card" style={{ border: '1px solid var(--accent-cyan)', background: 'color-mix(in srgb, var(--accent-cyan) 3%, transparent)' }}>
           <div className="panel-header">
             <h2 className="panel-title">{isEditing ? 'Edit Paket Internet' : 'Buat Paket Internet Baru'}</h2>
             <button onClick={handleCancel} className="action-btn" title="Batal">
@@ -152,7 +152,7 @@ export default function PackagesPage() {
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             {actionError && (
-              <div style={{ background: 'rgba(244, 63, 94, 0.1)', border: '1px solid var(--accent-rose)', padding: '1rem', borderRadius: 'var(--radius-sm)', color: 'var(--accent-rose)', fontSize: '0.9rem' }}>
+              <div style={{ background: 'color-mix(in srgb, var(--accent-rose) 10%, transparent)', border: '1px solid var(--accent-rose)', padding: '1rem', borderRadius: 'var(--radius-sm)', color: 'var(--accent-rose)', fontSize: '0.9rem' }}>
                 {actionError}
               </div>
             )}
@@ -166,7 +166,7 @@ export default function PackagesPage() {
                   value={form.name} 
                   onChange={handleInputChange} 
                   className="form-input" 
-                  placeholder="Contoh: Dara Hemat 10 Mbps"
+                  placeholder="Contoh: Lite"
                   required
                 />
               </div>
@@ -274,7 +274,7 @@ export default function PackagesPage() {
               <tbody>
                 {packages.map((pkg) => (
                   <tr key={pkg.id}>
-                    <td style={{ fontWeight: '600', color: '#fff' }}>
+                    <td style={{ fontWeight: '600', color: 'var(--text-heading)' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                         <Wifi size={18} style={{ color: 'var(--accent-cyan)' }} />
                         {pkg.name}
@@ -308,7 +308,7 @@ export default function PackagesPage() {
       </section>
 
       {/* Modern info footer card */}
-      <div style={{ display: 'flex', gap: '1rem', background: 'rgba(255,255,255,0.01)', border: '1px solid var(--border-color)', padding: '1.25rem', borderRadius: 'var(--radius-md)', alignItems: 'flex-start' }}>
+      <div style={{ display: 'flex', gap: '1rem', background: 'var(--hover-overlay)', border: '1px solid var(--border-color)', padding: '1.25rem', borderRadius: 'var(--radius-md)', alignItems: 'flex-start' }}>
         <Info size={20} style={{ color: 'var(--accent-cyan)', marginTop: '0.1rem' }} />
         <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
           <strong>Petunjuk Manajemen Paket:</strong> Paket internet terintegrasi langsung dengan profil pelanggan. Menghapus paket hanya diperbolehkan jika tidak ada pelanggan aktif yang melanggan paket tersebut. Anda dapat menyesuaikan harga dan bandwidth kapan saja secara real-time.

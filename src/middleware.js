@@ -5,7 +5,13 @@ export function middleware(request) {
   const session = request.cookies.get('daranett_session')?.value;
 
   // Paths that do not require authentication
-  const isAuthRoute = pathname === '/login' || pathname.startsWith('/api/auth');
+  const isAuthRoute = 
+    pathname === '/login' || 
+    pathname.startsWith('/api/auth') || 
+    pathname.startsWith('/invoice') || 
+    pathname.startsWith('/api/public') ||
+    pathname.startsWith('/api/cron');
+
   const isStaticAsset = pathname.startsWith('/_next') || pathname.includes('.') || pathname === '/favicon.ico';
 
   if (isStaticAsset) {
