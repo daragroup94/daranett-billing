@@ -26,6 +26,8 @@ services:
       DATABASE_URL: postgresql://daranett:daranett123@db:5432/daranett_billing?schema=public
       NODE_ENV: production
       TZ: Asia/Jakarta
+    volumes:
+      - ./backups:/app/backups
     expose:
       - "3000"
     labels:
