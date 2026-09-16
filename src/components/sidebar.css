@@ -84,6 +84,8 @@
   top: 1.25rem;
   left: 1.25rem;
   z-index: 150;
+  overflow: visible;
+  will-change: width;
   transition: width 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), padding 0.35s ease, transform 0.35s ease;
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
@@ -94,9 +96,11 @@ html[data-theme='light'] .sidebar {
 }
 
 /* Collapsed State */
-.sidebar.sidebar-collapsed:not(:hover) {
+.sidebar.sidebar-collapsed {
   width: 72px;
   padding: 1.1rem 0.45rem 0.9rem 0.45rem;
+  overflow: visible;
+  will-change: auto;
 }
 
 /* ===== Floating Collapse Button on Desktop Edge ===== */
@@ -114,22 +118,39 @@ html[data-theme='light'] .sidebar {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
   z-index: 20;
+  /* Button always visible even with sidebar overflow: hidden */
+  flex-shrink: 0;
 }
 
 .collapse-btn-floating:hover {
   color: var(--text-heading);
   border-color: var(--accent-cyan);
-  transform: scale(1.12);
-  box-shadow: 0 0 10px rgba(6, 182, 212, 0.35);
+  transform: scale(1.15);
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.45);
+}
+
+/* Collapsed state: button glows cyan to signal "click to expand" */
+.sidebar.sidebar-collapsed .collapse-btn-floating {
+  border-color: rgba(6, 182, 212, 0.45);
+  color: var(--accent-cyan);
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.3), 0 3px 8px rgba(0, 0, 0, 0.2);
+  right: -13px;
+}
+
+.sidebar.sidebar-collapsed .collapse-btn-floating:hover {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 16px rgba(6, 182, 212, 0.55), 0 3px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.18);
 }
 
 /* ===== FIXED TOP AREA ===== */
 .sidebar-top {
   flex-shrink: 0;
   margin-bottom: 0.6rem;
+  overflow: hidden;
 }
 
 /* Header row: Brand Logo + Theme Toggle + Mobile Close */
@@ -230,11 +251,11 @@ html[data-theme='light'] .sidebar {
   transform: rotate(15deg);
 }
 
-.sidebar.sidebar-collapsed:not(:hover) .logo-text-group,
-.sidebar.sidebar-collapsed:not(:hover) .sidebar-header-actions {
+.sidebar.sidebar-collapsed .logo-text-group,
+.sidebar.sidebar-collapsed .sidebar-header-actions {
   display: none;
 }
-.sidebar.sidebar-collapsed:not(:hover) .logo-container {
+.sidebar.sidebar-collapsed .logo-container {
   justify-content: center;
 }
 
@@ -323,7 +344,7 @@ html[data-theme='light'] .sidebar {
   pointer-events: none;
 }
 
-.sidebar.sidebar-collapsed:not(:hover) .sidebar-search {
+.sidebar.sidebar-collapsed .sidebar-search {
   display: none;
 }
 
@@ -366,7 +387,7 @@ html[data-theme='light'] .sidebar {
   margin-bottom: 0.2rem;
 }
 
-.sidebar.sidebar-collapsed:not(:hover) .nav-section-title {
+.sidebar.sidebar-collapsed .nav-section-title {
   display: none;
 }
 
@@ -383,7 +404,7 @@ html[data-theme='light'] .sidebar {
   margin: 0.35rem 0;
 }
 
-.sidebar.sidebar-collapsed:not(:hover) .nav-separator {
+.sidebar.sidebar-collapsed .nav-separator {
   width: 26px;
   margin: 0.35rem auto;
 }
@@ -471,16 +492,16 @@ html[data-theme='light'] .sidebar {
 }
 
 /* Tooltip for collapsed mode */
-.sidebar.sidebar-collapsed:not(:hover) .nav-link {
+.sidebar.sidebar-collapsed .nav-link {
   justify-content: center;
   padding: 0.55rem 0;
 }
 
-.sidebar.sidebar-collapsed:not(:hover) .nav-label {
+.sidebar.sidebar-collapsed .nav-label {
   display: none;
 }
 
-.sidebar.sidebar-collapsed:not(:hover) .nav-link::after {
+.sidebar.sidebar-collapsed .nav-link::after {
   content: attr(data-tooltip);
   position: absolute;
   left: calc(100% + 12px);
@@ -501,7 +522,7 @@ html[data-theme='light'] .sidebar {
   z-index: 999;
 }
 
-.sidebar.sidebar-collapsed:not(:hover) .nav-link:hover::after {
+.sidebar.sidebar-collapsed .nav-link:hover::after {
   opacity: 1;
   transform: translateY(-50%) translateX(0);
 }
@@ -522,6 +543,7 @@ html[data-theme='light'] .sidebar {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
+  overflow: hidden;
 }
 
 /* Compact System Status Pill */
@@ -567,19 +589,20 @@ html[data-theme='light'] .sidebar {
   font-weight: 500;
 }
 
-.sidebar.sidebar-collapsed:not(:hover) .sidebar-status-pill {
+.sidebar.sidebar-collapsed .sidebar-status-pill {
   justify-content: center;
   padding: 0.4rem 0;
 }
 
-.sidebar.sidebar-collapsed:not(:hover) .status-text,
-.sidebar.sidebar-collapsed:not(:hover) .status-version {
+.sidebar.sidebar-collapsed .status-text,
+.sidebar.sidebar-collapsed .status-version {
   display: none;
 }
 
 /* User Profile Row */
 .sidebar-footer {
   position: relative;
+  overflow: visible;
 }
 
 .user-profile-compact {
@@ -646,11 +669,11 @@ html[data-theme='light'] .sidebar {
   color: var(--text-heading);
 }
 
-.sidebar.sidebar-collapsed:not(:hover) .user-info,
-.sidebar.sidebar-collapsed:not(:hover) .user-settings-icon {
+.sidebar.sidebar-collapsed .user-info,
+.sidebar.sidebar-collapsed .user-settings-icon {
   display: none;
 }
-.sidebar.sidebar-collapsed:not(:hover) .user-profile-compact {
+.sidebar.sidebar-collapsed .user-profile-compact {
   padding: 0.35rem;
   justify-content: center;
 }
@@ -713,8 +736,12 @@ html[data-theme='light'] .sidebar {
   color: var(--accent-rose, #f43f5e);
 }
 
-.sidebar.sidebar-collapsed:not(:hover) .user-dropdown-menu {
-  display: none;
+.sidebar.sidebar-collapsed .user-dropdown-menu {
+  position: absolute;
+  left: calc(100% + 12px);
+  bottom: 0;
+  width: 175px;
+  z-index: 200;
 }
 
 /* ===== Animations ===== */
@@ -764,27 +791,27 @@ html[data-theme='light'] .sidebar {
   .collapse-btn-floating {
     display: none !important;
   }
-  .sidebar.sidebar-collapsed:not(:hover) .logo-text-group {
+  .sidebar.sidebar-collapsed .logo-text-group {
     display: flex !important;
   }
-  .sidebar.sidebar-collapsed:not(:hover) .sidebar-header-actions {
+  .sidebar.sidebar-collapsed .sidebar-header-actions {
     display: flex !important;
   }
-  .sidebar.sidebar-collapsed:not(:hover) .sidebar-search {
+  .sidebar.sidebar-collapsed .sidebar-search {
     display: flex !important;
   }
-  .sidebar.sidebar-collapsed:not(:hover) .nav-label {
+  .sidebar.sidebar-collapsed .nav-label {
     display: block !important;
   }
-  .sidebar.sidebar-collapsed:not(:hover) .status-text,
-  .sidebar.sidebar-collapsed:not(:hover) .status-version {
+  .sidebar.sidebar-collapsed .status-text,
+  .sidebar.sidebar-collapsed .status-version {
     display: block !important;
   }
-  .sidebar.sidebar-collapsed:not(:hover) .user-info,
-  .sidebar.sidebar-collapsed:not(:hover) .user-settings-icon {
+  .sidebar.sidebar-collapsed .user-info,
+  .sidebar.sidebar-collapsed .user-settings-icon {
     display: flex !important;
   }
-  .sidebar.sidebar-collapsed:not(:hover) .user-profile-compact {
+  .sidebar.sidebar-collapsed .user-profile-compact {
     border-radius: 10px !important;
     width: 100% !important;
     height: auto !important;

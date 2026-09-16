@@ -328,6 +328,14 @@ export default function Sidebar() {
                 >
                   <Settings size={13} /> Pengaturan Akun
                 </Link>
+                <button
+                  onClick={toggleTheme}
+                  className="dropdown-item"
+                  type="button"
+                >
+                  {theme === 'dark' ? <Sun size={13} /> : <Moon size={13} />}
+                  <span>{theme === 'dark' ? 'Mode Terang' : 'Mode Gelap'}</span>
+                </button>
                 <div className="dropdown-divider" />
                 <button
                   onClick={handleLogout}
