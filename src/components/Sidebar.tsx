@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import './sidebar.css';
 import {
   LayoutDashboard, Users, Wifi, Receipt, Database,
   Activity, LogOut, Bell, Settings, Sun, Moon, Menu, X,
-  ChevronLeft, ChevronRight, Server, Search, User
+  ChevronLeft, ChevronRight, Search, User
 } from 'lucide-react';
 
 export default function Sidebar() {
@@ -16,7 +16,8 @@ export default function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [hoveredLink, setHoveredLink] = useState({ section: null, top: 0 });
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Read theme and sidebar collapse from localStorage on mount
   useEffect(() => {
@@ -31,6 +32,18 @@ export default function Sidebar() {
     } else {
       document.documentElement.removeAttribute('data-sidebar-collapsed');
     }
+  }, []);
+
+  // Shortcut Ctrl+K / Cmd+K to focus search input
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   // Toggle theme between light and dark
@@ -82,6 +95,15 @@ export default function Sidebar() {
     { href: '/pengaturan', label: 'Pengaturan', icon: Settings },
   ];
 
+  const query = searchQuery.trim().toLowerCase();
+  const filteredMain = query
+    ? mainLinks.filter((l) => l.label.toLowerCase().includes(query))
+    : mainLinks;
+  const filteredOther = query
+    ? otherLinks.filter((l) => l.label.toLowerCase().includes(query))
+    : otherLinks;
+  const hasResults = filteredMain.length > 0 || filteredOther.length > 0;
+
   const handleLogout = async () => {
     if (!confirm('Apakah Anda yakin ingin keluar?')) return;
     try {
@@ -94,26 +116,28 @@ export default function Sidebar() {
     }
   };
 
-  const isActive = (href) =>
+  const isActive = (href: string) =>
     pathname === href || (href !== '/' && pathname.startsWith(href));
 
-  const renderLink = (link, index, sectionName) => {
+  const renderLink = (
+    link: { href: string; label: string; icon: any },
+    index: number
+  ) => {
     const Icon = link.icon;
     const active = isActive(link.href);
     return (
-      <li 
+      <li
         key={link.href}
-        onMouseEnter={(e) => setHoveredLink({ section: sectionName, top: e.currentTarget.offsetTop })}
-        style={{ animationDelay: `${index * 0.05}s` }}
+        style={{ animationDelay: `${index * 0.03}s` }}
         className="nav-item-animated"
       >
-        <Link 
+        <Link
           id={`sidebar-link-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
-          href={link.href} 
+          href={link.href}
           className={`nav-link ${active ? 'active' : ''}`}
           data-tooltip={link.label}
         >
-          <Icon className="nav-icon" size={18} />
+          <Icon className="nav-icon" size={17} />
           <span className="nav-label">{link.label}</span>
           {active && <span className="active-glow-bar" />}
         </Link>
@@ -123,27 +147,27 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Mobile Top Navbar (Sleek Glassmorphic) */}
+      {/* Mobile Top Navbar */}
       <div className="mobile-top-nav">
         <button
           id="mobile-hamburger"
           className="mobile-hamburger"
           onClick={() => setMobileOpen(true)}
-          aria-label="Open menu"
+          aria-label="Buka menu"
         >
           <Menu size={22} />
         </button>
-        
+
         <Link href="/" className="mobile-logo">
           <div className="logo-icon logo-icon--small">D</div>
           <span className="logo-text">DARANETT</span>
         </Link>
-        
-        <button 
+
+        <button
           id="mobile-theme-toggle"
-          className="mobile-theme-toggle" 
-          onClick={toggleTheme} 
-          aria-label="Toggle theme"
+          className="mobile-theme-toggle"
+          onClick={toggleTheme}
+          aria-label="Ubah tema"
         >
           {theme === 'dark' ? <Moon size={20} /> : <Sun size={20} />}
         </button>
@@ -158,139 +182,164 @@ export default function Sidebar() {
       )}
 
       {/* Sidebar Container */}
-      <aside className={`sidebar${mobileOpen ? ' sidebar-open' : ''}${collapsed ? ' sidebar-collapsed' : ''}`}>
-        
-        {/* Sleek Floating Collapse button on desktop edge */}
+      <aside
+        className={`sidebar${mobileOpen ? ' sidebar-open' : ''}${
+          collapsed ? ' sidebar-collapsed' : ''
+        }`}
+      >
+        {/* Floating Collapse button on desktop edge */}
         <button
           id="sidebar-collapse-btn"
           className="collapse-btn-floating"
           onClick={toggleCollapse}
-          aria-label="Toggle sidebar"
+          aria-label="Kecilkan/Besarkan sidebar"
+          title={collapsed ? 'Perluas Sidebar' : 'Kecilkan Sidebar'}
         >
-          {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+          {collapsed ? <ChevronRight size={13} /> : <ChevronLeft size={13} />}
         </button>
 
-        {/* FIXED TOP AREA */}
+        {/* FIXED TOP AREA (Header & Compact Search) */}
         <div className="sidebar-top">
-          {/* Header row: logo + close (mobile) */}
           <div className="sidebar-header">
             <Link href="/" className="logo-container">
               <div className="logo-icon">D</div>
               <div className="logo-text-group">
                 <span className="logo-text">DARANETT</span>
-                <span className="logo-sub">RTRW Net Manager</span>
+                <span className="logo-sub">RTRW NET MANAGER</span>
               </div>
             </Link>
 
-            {/* Mobile close button */}
-            <button
-              id="sidebar-close-btn"
-              className="sidebar-close"
-              onClick={() => setMobileOpen(false)}
-              aria-label="Close menu"
-            >
-              <X size={20} />
-            </button>
+            <div className="sidebar-header-actions">
+              <button
+                id="header-theme-toggle"
+                className="header-theme-btn"
+                onClick={toggleTheme}
+                title={theme === 'dark' ? 'Mode Terang' : 'Mode Gelap'}
+                aria-label="Toggle tema"
+              >
+                {theme === 'dark' ? <Moon size={14} /> : <Sun size={14} />}
+              </button>
+
+              <button
+                id="sidebar-close-btn"
+                className="sidebar-close"
+                onClick={() => setMobileOpen(false)}
+                aria-label="Tutup menu"
+              >
+                <X size={18} />
+              </button>
+            </div>
           </div>
 
-          {/* Theme Toggle (iOS Switch) */}
-          <div className="theme-toggle-container">
-            <button id="theme-toggle-switch" className="theme-toggle-switch" onClick={toggleTheme} aria-label="Toggle theme">
-              <div className={`theme-toggle-switch-slider ${theme === 'light' ? 'slide-light' : ''}`}>
-                {theme === 'dark' ? <Moon size={12} className="switch-icon" /> : <Sun size={12} className="switch-icon" />}
-              </div>
-              <span className="theme-toggle-switch-text">
-                {theme === 'dark' ? 'Mode Gelap' : 'Mode Terang'}
-              </span>
-            </button>
-          </div>
-          
-          {/* Quick Search */}
+          {/* Interactive Compact Search */}
           <div className="sidebar-search">
-            <Search size={16} className="search-icon" />
-            <input type="text" placeholder="Cari... ⌘K" className="search-input" />
+            <Search size={14} className="search-icon" />
+            <input
+              ref={searchInputRef}
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Cari menu..."
+              className="search-input"
+            />
+            {searchQuery ? (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="search-clear-btn"
+                title="Hapus pencarian"
+              >
+                <X size={13} />
+              </button>
+            ) : (
+              <span className="search-kbd-hint">⌘K</span>
+            )}
           </div>
         </div>
 
-        {/* SCROLLABLE MIDDLE AREA (Menu Utama & Lainnya) */}
+        {/* NAVIGATION AREA (All items visible without scroll on typical screens) */}
         <div className="sidebar-nav-scroll">
-          {/* Main section */}
-          <div className="nav-section">
-            <span className="nav-section-title">Menu Utama</span>
-            <ul className="nav-links" onMouseLeave={() => setHoveredLink({ section: null, top: 0 })}>
-              {hoveredLink.section === 'main' && <div className="fluid-hover-bg" style={{ top: hoveredLink.top }} />}
-              {mainLinks.map((link, i) => renderLink(link, i, 'main'))}
-            </ul>
-          </div>
+          {filteredMain.length > 0 && (
+            <div className="nav-section">
+              <span className="nav-section-title">Menu Utama</span>
+              <ul className="nav-links">
+                {filteredMain.map((link, i) => renderLink(link, i))}
+              </ul>
+            </div>
+          )}
 
-          {/* Separator */}
-          <div className="nav-separator" />
+          {filteredMain.length > 0 && filteredOther.length > 0 && (
+            <div className="nav-separator" />
+          )}
 
-          {/* Other section */}
-          <div className="nav-section">
-            <span className="nav-section-title">Lainnya</span>
-            <ul className="nav-links" onMouseLeave={() => setHoveredLink({ section: null, top: 0 })}>
-              {hoveredLink.section === 'other' && <div className="fluid-hover-bg" style={{ top: hoveredLink.top }} />}
-              {otherLinks.map((link, i) => renderLink(link, i + mainLinks.length, 'other'))}
-            </ul>
-          </div>
+          {filteredOther.length > 0 && (
+            <div className="nav-section">
+              <span className="nav-section-title">Lainnya</span>
+              <ul className="nav-links">
+                {filteredOther.map((link, i) =>
+                  renderLink(link, i + filteredMain.length)
+                )}
+              </ul>
+            </div>
+          )}
+
+          {!hasResults && (
+            <div className="nav-empty-state">
+              <span>Tidak ada menu yang sesuai &quot;{searchQuery}&quot;</span>
+            </div>
+          )}
         </div>
 
-        {/* FIXED BOTTOM AREA (Status Cards & Logout) */}
+        {/* FIXED BOTTOM AREA (Compact Status & Profile) */}
         <div className="sidebar-bottom">
-          {/* Status Cards (Futuristic Diagnostic Widget) */}
-          <div className="diagnostic-widget">
-            <div className="diag-header">
-              <span className="diag-title">SYSTEM MONITOR</span>
-              <span className="diag-pulse" />
-            </div>
-            <div className="diag-list">
-              <div className="diag-item">
-                <span className="diag-indicator diag-indicator--active" />
-                <Server size={12} />
-                <span className="diag-name">Cloud Gateway</span>
-              </div>
-              <div className="diag-item">
-                <span className="diag-indicator diag-indicator--active" />
-                <Database size={12} />
-                <span className="diag-name">Postgres DB</span>
-              </div>
-            </div>
+          <div
+            className="sidebar-status-pill"
+            title="Sistem Berjalan Normal • Cloud Gateway & Database Terhubung"
+          >
+            <span className="status-pulse-dot" />
+            <span className="status-text">Sistem Normal</span>
+            <span className="status-version">v2.1</span>
           </div>
 
           <div className="sidebar-footer">
-            <div className={`user-profile-premium ${showDropdown ? 'active' : ''}`} onClick={() => setShowDropdown(!showDropdown)}>
+            <div
+              className={`user-profile-compact ${
+                showDropdown ? 'active' : ''
+              }`}
+              onClick={() => setShowDropdown(!showDropdown)}
+              title="Profil & Opsi"
+            >
               <div className="user-avatar">
-                <User size={18} />
+                <User size={15} />
               </div>
               <div className="user-info">
                 <span className="user-name">Admin DaraNet</span>
                 <span className="user-role">Superuser</span>
               </div>
-              <Settings size={14} className="user-settings-icon" />
+              <Settings size={13} className="user-settings-icon" />
             </div>
 
             {/* Dropdown Menu */}
             {showDropdown && (
               <div className="user-dropdown-menu">
-                <button onClick={() => window.location.href='/pengaturan'} className="dropdown-item">
-                  <Settings size={14} className="dropdown-icon" /> Pengaturan Akun
-                </button>
+                <Link
+                  href="/pengaturan"
+                  className="dropdown-item"
+                  onClick={() => setShowDropdown(false)}
+                >
+                  <Settings size={13} /> Pengaturan Akun
+                </Link>
                 <div className="dropdown-divider" />
-                <button onClick={handleLogout} className="dropdown-item logout-text">
-                  <LogOut size={14} className="dropdown-icon" /> Keluar
+                <button
+                  onClick={handleLogout}
+                  className="dropdown-item logout-text"
+                >
+                  <LogOut size={13} /> Keluar
                 </button>
               </div>
             )}
-            
-            <div className="version-info-premium">
-              <p>Core Build v2.1.0</p>
-            </div>
           </div>
         </div>
       </aside>
-
-      
     </>
   );
 }
