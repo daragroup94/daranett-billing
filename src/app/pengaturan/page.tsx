@@ -14,8 +14,12 @@ import {
   Globe,
   CreditCard,
   Activity,
-  Trash2
+  Trash2,
+  Palette,
+  Check,
+  Sparkles
 } from 'lucide-react';
+import { THEMES } from '@/lib/themes';
 
 export default function PengaturanPage() {
   const [activeTab, setActiveTab] = useState('password');
@@ -195,8 +199,23 @@ export default function PengaturanPage() {
     setSettings(prev => ({ ...prev, cronToken: token }));
   };
 
+  const [currentTheme, setCurrentTheme] = useState('dark');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setCurrentTheme(localStorage.getItem('daranett-theme') || 'dark');
+    }
+  }, []);
+
+  const handleSelectTheme = (themeId: string) => {
+    setCurrentTheme(themeId);
+    localStorage.setItem('daranett-theme', themeId);
+    document.documentElement.setAttribute('data-theme', themeId);
+  };
+
   const tabs = [
     { id: 'password', label: 'Ganti Password', icon: Lock },
+    { id: 'tema', label: 'Tema & Tampilan', icon: Palette },
     { id: 'mikrotik', label: 'Mikrotik Router', icon: Server },
     { id: 'midtrans', label: 'Midtrans Payment', icon: CreditCard },
     { id: 'cron', label: 'Otomatisasi Cron', icon: Globe },
@@ -370,6 +389,134 @@ export default function PengaturanPage() {
               </button>
             </div>
           </form>
+        </section>
+      )}
+
+      {/* Tab Content: Tema & Tampilan */}
+      {activeTab === 'tema' && (
+        <section className="panel-card">
+          <div className="panel-header" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem', marginBottom: '1.25rem' }}>
+            <div>
+              <h2 className="panel-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Palette size={20} style={{ color: 'var(--accent-cyan)' }} /> Tema &amp; Estetika Tampilan
+              </h2>
+              <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                Sesuaikan skema warna dan ambient visual DaraNet sesuai kenyamanan mata dan gaya Anda.
+              </p>
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem', marginBottom: '1.75rem' }}>
+            {THEMES.map((t) => {
+              const isSelected = currentTheme === t.id;
+              return (
+                <div
+                  key={t.id}
+                  onClick={() => handleSelectTheme(t.id)}
+                  style={{
+                    background: isSelected ? 'var(--hover-overlay-strong)' : 'var(--hover-overlay)',
+                    border: isSelected ? `2px solid ${t.accent}` : '1px solid var(--border-color)',
+                    borderRadius: '16px',
+                    padding: '1.1rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.75rem',
+                    transition: 'all 0.25s ease',
+                    boxShadow: isSelected ? `0 8px 24px ${t.accent}25` : 'none',
+                    position: 'relative'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div style={{ width: 20, height: 20, borderRadius: '50%', background: t.bg, border: '1px solid rgba(255,255,255,0.2)' }} title="Background" />
+                      <div style={{ width: 20, height: 20, borderRadius: '50%', background: t.cardBg, border: '1px solid rgba(255,255,255,0.2)' }} title="Card Background" />
+                      <div style={{ width: 20, height: 20, borderRadius: '50%', background: t.accent }} title="Accent 1" />
+                      <div style={{ width: 20, height: 20, borderRadius: '50%', background: t.accent2 }} title="Accent 2" />
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <span style={{ 
+                        fontSize: '0.7rem', 
+                        fontWeight: 700, 
+                        padding: '2px 8px', 
+                        borderRadius: '12px', 
+                        background: t.type === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
+                        color: 'var(--text-secondary)' 
+                      }}>
+                        {t.type === 'dark' ? 'Mode Gelap' : 'Mode Terang'}
+                      </span>
+                      {isSelected && (
+                        <span style={{ 
+                          fontSize: '0.7rem', 
+                          fontWeight: 700, 
+                          padding: '2px 9px', 
+                          borderRadius: '12px', 
+                          background: t.accent, 
+                          color: '#ffffff',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px'
+                        }}>
+                          <Check size={11} /> Aktif
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <strong style={{ fontSize: '1rem', color: isSelected ? t.accent : 'var(--text-heading)', display: 'block' }}>
+                      {t.name}
+                    </strong>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: '0.2rem 0 0 0', lineHeight: 1.4 }}>
+                      {t.description}
+                    </p>
+                  </div>
+
+                  {/* Visual Preview Box */}
+                  <div style={{
+                    background: t.bg,
+                    borderRadius: '10px',
+                    padding: '8px 12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    border: `1px solid ${t.border}`
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div style={{ width: 10, height: 10, borderRadius: '50%', background: t.accent }} />
+                      <span style={{ fontSize: '0.75rem', fontWeight: 600, color: t.type === 'dark' ? '#f1f5f9' : '#0f172a' }}>
+                        DaraNet ISP
+                      </span>
+                    </div>
+                    <span style={{ fontSize: '0.7rem', color: t.accent, fontWeight: 700 }}>
+                      PRATINJAU
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Theme Live Sandbox Preview */}
+          <div style={{
+            background: 'var(--hover-overlay)',
+            border: '1px solid var(--border-color)',
+            borderRadius: 'var(--radius-md)',
+            padding: '1.25rem'
+          }}>
+            <h3 style={{ margin: '0 0 0.85rem 0', fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-heading)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <Sparkles size={16} style={{ color: 'var(--accent-cyan)' }} />
+              Pratinjau Elemen UI Tema Terpilih
+            </h3>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
+              <button className="btn btn-primary">Tombol Primary</button>
+              <button className="btn btn-secondary">Tombol Secondary</button>
+              <span className="badge badge-active">Status Aktif</span>
+              <span className="badge badge-grace">Grace Period</span>
+              <span className="badge badge-suspended">Isolir</span>
+            </div>
+          </div>
         </section>
       )}
 

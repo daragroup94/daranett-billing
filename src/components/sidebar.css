@@ -90,7 +90,8 @@
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-html[data-theme='light'] .sidebar {
+html[data-theme='light'] .sidebar,
+html[data-theme='nordic'] .sidebar {
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
   border: 1px solid rgba(0, 0, 0, 0.08);
 }

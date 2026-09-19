@@ -7,12 +7,14 @@ import './sidebar.css';
 import {
   LayoutDashboard, Users, Wifi, Receipt, Database,
   Activity, LogOut, Bell, Settings, Sun, Moon, Menu, X,
-  ChevronLeft, ChevronRight, Search, User
+  ChevronLeft, ChevronRight, Search, User, Wallet, Palette, Check
 } from 'lucide-react';
+import { THEMES } from '@/lib/themes';
 
 export default function Sidebar() {
   const pathname = usePathname();
   const [theme, setTheme] = useState('dark');
+  const [showThemeModal, setShowThemeModal] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -44,6 +46,13 @@ export default function Sidebar() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Select a specific theme
+  const selectTheme = useCallback((themeId: string) => {
+    setTheme(themeId);
+    localStorage.setItem('daranett-theme', themeId);
+    document.documentElement.setAttribute('data-theme', themeId);
   }, []);
 
   // Toggle theme between light and dark
@@ -86,6 +95,7 @@ export default function Sidebar() {
     { href: '/customers', label: 'Pelanggan', icon: Users },
     { href: '/packages', label: 'Paket Internet', icon: Wifi },
     { href: '/billing', label: 'Billing & Tagihan', icon: Receipt },
+    { href: '/kas', label: 'Buku Kas & Biaya', icon: Wallet },
   ];
 
   const otherLinks = [
@@ -166,10 +176,11 @@ export default function Sidebar() {
         <button
           id="mobile-theme-toggle"
           className="mobile-theme-toggle"
-          onClick={toggleTheme}
-          aria-label="Ubah tema"
+          onClick={() => setShowThemeModal(true)}
+          aria-label="Pilih tema tampilan"
+          title="Pilih tema tampilan"
         >
-          {theme === 'dark' ? <Moon size={20} /> : <Sun size={20} />}
+          <Palette size={20} />
         </button>
       </div>
 
@@ -213,11 +224,11 @@ export default function Sidebar() {
               <button
                 id="header-theme-toggle"
                 className="header-theme-btn"
-                onClick={toggleTheme}
-                title={theme === 'dark' ? 'Mode Terang' : 'Mode Gelap'}
-                aria-label="Toggle tema"
+                onClick={() => setShowThemeModal(true)}
+                title="Pilih Tema Tampilan (8 Tema)"
+                aria-label="Pilih Tema Tampilan"
               >
-                {theme === 'dark' ? <Moon size={14} /> : <Sun size={14} />}
+                <Palette size={14} />
               </button>
 
               <button
@@ -329,12 +340,15 @@ export default function Sidebar() {
                   <Settings size={13} /> Pengaturan Akun
                 </Link>
                 <button
-                  onClick={toggleTheme}
+                  onClick={() => {
+                    setShowDropdown(false);
+                    setShowThemeModal(true);
+                  }}
                   className="dropdown-item"
                   type="button"
                 >
-                  {theme === 'dark' ? <Sun size={13} /> : <Moon size={13} />}
-                  <span>{theme === 'dark' ? 'Mode Terang' : 'Mode Gelap'}</span>
+                  <Palette size={13} />
+                  <span>Pilih Tema (8 Tema)</span>
                 </button>
                 <div className="dropdown-divider" />
                 <button
@@ -348,6 +362,170 @@ export default function Sidebar() {
           </div>
         </div>
       </aside>
+
+      {/* ── THEME PICKER MODAL (8 THEMES) ── */}
+      {showThemeModal && (
+        <div 
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0, 0, 0, 0.75)',
+            backdropFilter: 'blur(8px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 99999,
+            padding: '1rem'
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowThemeModal(false);
+          }}
+        >
+          <div 
+            style={{
+              background: 'var(--bg-secondary-solid, #0f172a)',
+              border: '1px solid var(--border-color)',
+              borderRadius: '20px',
+              maxWidth: '680px',
+              width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              boxShadow: '0 25px 60px rgba(0,0,0,0.6)',
+              padding: '1.5rem',
+              color: 'var(--text-primary)'
+            }}
+          >
+            {/* Modal Header */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem', marginBottom: '1.25rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                <div style={{ width: 34, height: 34, borderRadius: 10, background: 'linear-gradient(135deg, var(--accent-cyan), #6366f1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>
+                  <Palette size={18} />
+                </div>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-heading)' }}>
+                    Pilih Tema Tampilan
+                  </h3>
+                  <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                    Tersedia 8 preset visual modern yang dirancang khusus untuk DaraNet
+                  </p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setShowThemeModal(false)}
+                style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px' }}
+                title="Tutup modal"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Themes Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '0.85rem' }}>
+              {THEMES.map((t) => {
+                const isSelected = theme === t.id;
+                return (
+                  <div
+                    key={t.id}
+                    onClick={() => selectTheme(t.id)}
+                    style={{
+                      background: isSelected ? 'var(--hover-overlay-strong)' : 'var(--hover-overlay)',
+                      border: isSelected ? `2px solid ${t.accent}` : '1px solid var(--border-color)',
+                      borderRadius: '14px',
+                      padding: '1rem',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.65rem',
+                      position: 'relative',
+                      transition: 'all 0.2s ease',
+                      boxShadow: isSelected ? `0 0 16px ${t.accent}33` : 'none'
+                    }}
+                  >
+                    {/* Top Row: Mini Swatch & Type Badge */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      {/* Color dots */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <div style={{ width: 18, height: 18, borderRadius: '50%', background: t.bg, border: '1px solid rgba(255,255,255,0.2)' }} title="Background" />
+                        <div style={{ width: 18, height: 18, borderRadius: '50%', background: t.cardBg, border: '1px solid rgba(255,255,255,0.2)' }} title="Card Background" />
+                        <div style={{ width: 18, height: 18, borderRadius: '50%', background: t.accent }} title="Accent 1" />
+                        <div style={{ width: 18, height: 18, borderRadius: '50%', background: t.accent2 }} title="Accent 2" />
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                        <span style={{ 
+                          fontSize: '0.68rem', 
+                          fontWeight: 700, 
+                          padding: '2px 7px', 
+                          borderRadius: '12px', 
+                          background: t.type === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
+                          color: 'var(--text-secondary)' 
+                        }}>
+                          {t.type === 'dark' ? 'Gelap' : 'Terang'}
+                        </span>
+                        {isSelected && (
+                          <span style={{ 
+                            fontSize: '0.68rem', 
+                            fontWeight: 700, 
+                            padding: '2px 8px', 
+                            borderRadius: '12px', 
+                            background: t.accent, 
+                            color: '#ffffff',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '3px'
+                          }}>
+                            <Check size={10} /> Aktif
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Name & Description */}
+                    <div>
+                      <strong style={{ fontSize: '0.95rem', color: isSelected ? t.accent : 'var(--text-heading)', display: 'block' }}>
+                        {t.name}
+                      </strong>
+                      <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: '0.2rem 0 0 0', lineHeight: 1.4 }}>
+                        {t.description}
+                      </p>
+                    </div>
+
+                    {/* Mini Preview Bar */}
+                    <div style={{ 
+                      background: t.bg, 
+                      borderRadius: '8px', 
+                      padding: '6px 10px', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'space-between',
+                      border: `1px solid ${t.border}`
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                        <div style={{ width: 8, height: 8, borderRadius: '50%', background: t.accent }} />
+                        <span style={{ fontSize: '0.7rem', color: t.type === 'dark' ? '#f1f5f9' : '#0f172a', fontWeight: 600 }}>DaraNet</span>
+                      </div>
+                      <span style={{ fontSize: '0.65rem', color: t.accent, fontWeight: 700 }}>
+                        {t.id.toUpperCase()}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Footer */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
+              <button
+                onClick={() => setShowThemeModal(false)}
+                className="btn btn-primary"
+                style={{ minWidth: '100px' }}
+              >
+                Tutup
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

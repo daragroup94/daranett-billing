@@ -1,10 +1,18 @@
-import { Customer as PrismaCustomer, Package as PrismaPackage, Invoice as PrismaInvoice, SystemSettings as PrismaSettings, SystemLog as PrismaLog } from '@prisma/client';
+import { 
+  Customer as PrismaCustomer, 
+  Package as PrismaPackage, 
+  Invoice as PrismaInvoice, 
+  SystemSettings as PrismaSettings, 
+  SystemLog as PrismaLog,
+  Expense as PrismaExpense 
+} from '@prisma/client';
 
 export type Customer = PrismaCustomer;
 export type Package = PrismaPackage;
 export type Invoice = PrismaInvoice;
 export type SystemSettings = PrismaSettings;
 export type SystemLog = PrismaLog;
+export type Expense = PrismaExpense;
 
 export type CustomerWithPackage = Customer & {
   package: Package;

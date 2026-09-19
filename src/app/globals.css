@@ -65,7 +65,7 @@ html[data-theme='dark'] {
 }
 
 /* ================================================================
-   2. THEME VARIABLES — LIGHT
+   2. THEME VARIABLES — LIGHT & SPECIALIZED THEMES
    ================================================================ */
 html[data-theme='light'] {
   --sidebar-width: 250px;
@@ -111,6 +111,226 @@ html[data-theme='light'] {
   --scrollbar-thumb: #cbd5e1;
 }
 
+/* 3. Cyberpunk Neon Theme */
+html[data-theme='cyberpunk'] {
+  --sidebar-width: 250px;
+  --bg-primary: #070611;
+  --bg-secondary: rgba(18, 14, 36, 0.75);
+  --bg-secondary-solid: #130f28;
+  --bg-tertiary: #211942;
+
+  --accent-cyan: #00f0ff;
+  --accent-teal: #05ffa1;
+  --accent-purple: #bd00ff;
+  --accent-rose: #ff0055;
+  --accent-amber: #ffe600;
+
+  --text-primary: #f5f3ff;
+  --text-secondary: #a78bfa;
+  --text-muted: #6d5b97;
+  --text-heading: #ffffff;
+
+  --border-color: rgba(189, 0, 255, 0.18);
+  --border-glow: rgba(0, 240, 255, 0.4);
+
+  --glass-bg: rgba(19, 15, 40, 0.78);
+  --glass-border: rgba(189, 0, 255, 0.15);
+  --glass-blur: blur(20px);
+
+  --input-bg: rgba(9, 7, 22, 0.7);
+  --input-bg-focus: rgba(12, 9, 29, 0.95);
+  --hover-overlay: rgba(189, 0, 255, 0.05);
+  --hover-overlay-strong: rgba(0, 240, 255, 0.08);
+
+  --gradient-primary: linear-gradient(135deg, #00f0ff, #bd00ff);
+  --gradient-text: linear-gradient(135deg, #ffffff 30%, #a78bfa);
+}
+
+/* 4. Emerald Matrix Theme */
+html[data-theme='emerald'] {
+  --sidebar-width: 250px;
+  --bg-primary: #030d09;
+  --bg-secondary: rgba(5, 26, 19, 0.75);
+  --bg-secondary-solid: #06241b;
+  --bg-tertiary: #0c382a;
+
+  --accent-cyan: #2dd4bf;
+  --accent-teal: #10b981;
+  --accent-purple: #34d399;
+  --accent-rose: #f43f5e;
+  --accent-amber: #facc15;
+
+  --text-primary: #ecfdf5;
+  --text-secondary: #a7f3d0;
+  --text-muted: #4ade8080;
+  --text-heading: #ffffff;
+
+  --border-color: rgba(16, 185, 129, 0.18);
+  --border-glow: rgba(16, 185, 129, 0.35);
+
+  --glass-bg: rgba(6, 32, 24, 0.78);
+  --glass-border: rgba(16, 185, 129, 0.15);
+  --glass-blur: blur(20px);
+
+  --input-bg: rgba(3, 13, 9, 0.7);
+  --input-bg-focus: rgba(4, 20, 14, 0.95);
+  --hover-overlay: rgba(16, 185, 129, 0.05);
+  --hover-overlay-strong: rgba(16, 185, 129, 0.09);
+
+  --gradient-primary: linear-gradient(135deg, #10b981, #06b6d4);
+  --gradient-text: linear-gradient(135deg, #ffffff 30%, #a7f3d0);
+}
+
+/* 5. Royal Sapphire Theme */
+html[data-theme='sapphire'] {
+  --sidebar-width: 250px;
+  --bg-primary: #050a18;
+  --bg-secondary: rgba(9, 21, 48, 0.75);
+  --bg-secondary-solid: #0b1a3c;
+  --bg-tertiary: #132859;
+
+  --accent-cyan: #38bdf8;
+  --accent-teal: #0ea5e9;
+  --accent-purple: #6366f1;
+  --accent-rose: #f43f5e;
+  --accent-amber: #fbbf24;
+
+  --text-primary: #f0f9ff;
+  --text-secondary: #93c5fd;
+  --text-muted: #60a5fa80;
+  --text-heading: #ffffff;
+
+  --border-color: rgba(56, 189, 248, 0.16);
+  --border-glow: rgba(56, 189, 248, 0.35);
+
+  --glass-bg: rgba(11, 26, 60, 0.78);
+  --glass-border: rgba(56, 189, 248, 0.14);
+  --glass-blur: blur(20px);
+
+  --input-bg: rgba(5, 10, 24, 0.7);
+  --input-bg-focus: rgba(8, 16, 38, 0.95);
+  --hover-overlay: rgba(56, 189, 248, 0.05);
+  --hover-overlay-strong: rgba(99, 102, 241, 0.09);
+
+  --gradient-primary: linear-gradient(135deg, #38bdf8, #6366f1);
+  --gradient-text: linear-gradient(135deg, #ffffff 30%, #93c5fd);
+}
+
+/* 6. Sunset Amber Theme */
+html[data-theme='sunset'] {
+  --sidebar-width: 250px;
+  --bg-primary: #110905;
+  --bg-secondary: rgba(28, 16, 10, 0.75);
+  --bg-secondary-solid: #22130c;
+  --bg-tertiary: #381f14;
+
+  --accent-cyan: #f97316;
+  --accent-teal: #10b981;
+  --accent-purple: #fb923c;
+  --accent-rose: #ef4444;
+  --accent-amber: #f59e0b;
+
+  --text-primary: #fff7ed;
+  --text-secondary: #fdba74;
+  --text-muted: #fb923c70;
+  --text-heading: #ffffff;
+
+  --border-color: rgba(249, 115, 22, 0.18);
+  --border-glow: rgba(249, 115, 22, 0.35);
+
+  --glass-bg: rgba(34, 19, 12, 0.78);
+  --glass-border: rgba(249, 115, 22, 0.14);
+  --glass-blur: blur(20px);
+
+  --input-bg: rgba(17, 9, 5, 0.7);
+  --input-bg-focus: rgba(26, 14, 8, 0.95);
+  --hover-overlay: rgba(249, 115, 22, 0.05);
+  --hover-overlay-strong: rgba(245, 158, 11, 0.09);
+
+  --gradient-primary: linear-gradient(135deg, #f97316, #f59e0b);
+  --gradient-text: linear-gradient(135deg, #ffffff 30%, #fdba74);
+}
+
+/* 7. Obsidian OLED Theme */
+html[data-theme='oled'] {
+  --sidebar-width: 250px;
+  --bg-primary: #000000;
+  --bg-secondary: rgba(16, 16, 16, 0.85);
+  --bg-secondary-solid: #111111;
+  --bg-tertiary: #1e1e1e;
+
+  --accent-cyan: #38bdf8;
+  --accent-teal: #10b981;
+  --accent-purple: #a855f7;
+  --accent-rose: #fb7185;
+  --accent-amber: #fbbf24;
+
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --text-heading: #ffffff;
+
+  --border-color: rgba(255, 255, 255, 0.12);
+  --border-glow: rgba(255, 255, 255, 0.25);
+
+  --glass-bg: rgba(14, 14, 14, 0.88);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: blur(20px);
+
+  --input-bg: #050505;
+  --input-bg-focus: #141414;
+  --hover-overlay: rgba(255, 255, 255, 0.04);
+  --hover-overlay-strong: rgba(255, 255, 255, 0.08);
+
+  --gradient-primary: linear-gradient(135deg, #38bdf8, #a855f7);
+  --gradient-text: linear-gradient(135deg, #ffffff 40%, #a1a1aa);
+}
+
+/* 8. Nordic Ice Frost Theme (Light) */
+html[data-theme='nordic'] {
+  --sidebar-width: 250px;
+  --bg-primary: #f0f7ff;
+  --bg-secondary: rgba(255, 255, 255, 0.88);
+  --bg-secondary-solid: #ffffff;
+  --bg-tertiary: #dbeafe;
+
+  --accent-cyan: #0284c7;
+  --accent-teal: #0891b2;
+  --accent-purple: #4f46e5;
+  --accent-rose: #e11d48;
+  --accent-amber: #d97706;
+
+  --text-primary: #082f49;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --text-heading: #0c4a6e;
+
+  --border-color: rgba(2, 132, 199, 0.12);
+  --border-glow: rgba(2, 132, 199, 0.25);
+
+  --shadow-sm: 0 1px 3px rgba(2, 132, 199, 0.06), 0 1px 2px rgba(2, 132, 199, 0.04);
+  --shadow-md: 0 4px 16px rgba(2, 132, 199, 0.08), 0 2px 6px rgba(2, 132, 199, 0.04);
+  --shadow-lg: 0 12px 40px rgba(2, 132, 199, 0.12), 0 4px 12px rgba(2, 132, 199, 0.06);
+
+  --glass-bg: rgba(255, 255, 255, 0.88);
+  --glass-border: rgba(2, 132, 199, 0.1);
+  --glass-blur: blur(20px);
+
+  --input-bg: rgba(240, 247, 255, 0.85);
+  --input-bg-focus: #ffffff;
+  --hover-overlay: rgba(2, 132, 199, 0.03);
+  --hover-overlay-strong: rgba(2, 132, 199, 0.06);
+
+  --table-row-alt: rgba(240, 247, 255, 0.5);
+  --table-row-hover: rgba(2, 132, 199, 0.03);
+
+  --gradient-primary: linear-gradient(135deg, #0284c7, #4f46e5);
+  --gradient-text: linear-gradient(135deg, #082f49 30%, #0369a1);
+
+  --scrollbar-track: #f0f7ff;
+  --scrollbar-thumb: #bae6fd;
+}
+
 html[data-sidebar-collapsed='true'] {
   --sidebar-width: 72px;
 }
@@ -141,7 +361,7 @@ body {
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-/* Dark: subtle radial mesh gradient */
+/* Dynamic Body Ambient Mesh Gradients for All Themes */
 html[data-theme='dark'] body {
   background-image:
     radial-gradient(ellipse at 0% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
@@ -150,12 +370,56 @@ html[data-theme='dark'] body {
   background-attachment: fixed;
 }
 
-/* Light: clean subtle gradient wash */
+html[data-theme='cyberpunk'] body {
+  background-image:
+    radial-gradient(ellipse at 0% 0%, rgba(189, 0, 255, 0.14) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 0%, rgba(0, 240, 255, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(255, 0, 85, 0.09) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+html[data-theme='emerald'] body {
+  background-image:
+    radial-gradient(ellipse at 0% 0%, rgba(16, 185, 129, 0.14) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 0%, rgba(52, 211, 153, 0.09) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(6, 78, 59, 0.16) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+html[data-theme='sapphire'] body {
+  background-image:
+    radial-gradient(ellipse at 0% 0%, rgba(56, 189, 248, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 0%, rgba(99, 102, 241, 0.14) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(14, 116, 144, 0.09) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+html[data-theme='sunset'] body {
+  background-image:
+    radial-gradient(ellipse at 0% 0%, rgba(249, 115, 22, 0.14) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 0%, rgba(245, 158, 11, 0.11) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(239, 68, 68, 0.08) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+html[data-theme='oled'] body {
+  background-image: none;
+  background-color: #000000;
+}
+
 html[data-theme='light'] body {
   background-image:
     radial-gradient(ellipse at 0% 0%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
     radial-gradient(ellipse at 100% 0%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
     radial-gradient(ellipse at 50% 100%, rgba(20, 184, 166, 0.04) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+html[data-theme='nordic'] body {
+  background-image:
+    radial-gradient(ellipse at 0% 0%, rgba(2, 132, 199, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 0%, rgba(79, 70, 229, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(56, 189, 248, 0.08) 0%, transparent 50%);
   background-attachment: fixed;
 }
 
