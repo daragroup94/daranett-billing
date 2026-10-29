@@ -41,6 +41,16 @@ async function main() {
 
     await prisma.package.create({
       data: {
+        name: 'Advance',
+        speedUpload: 20,
+        speedDownload: 20,
+        price: 165000,
+        description: 'Koneksi cepat & stabil untuk keluarga dan streaming'
+      }
+    });
+
+    await prisma.package.create({
+      data: {
         name: 'Pro',
         speedUpload: 25,
         speedDownload: 25,

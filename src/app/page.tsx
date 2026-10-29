@@ -147,7 +147,7 @@ export default function Dashboard() {
       const now = new Date();
       const currentYear = now.getFullYear();
       const currentMonth = now.getMonth();
-      const currentYearMonth = now.toISOString().substring(0, 7);
+      const currentYearMonth = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
       
       const currentMonthInvoices = invoicesData.filter((inv: any) => inv.month === currentYearMonth);
       
@@ -1378,7 +1378,7 @@ export default function Dashboard() {
           </Link>
 
           {/* Card 4 – Total Piutang / Tunggakan */}
-          <Link href="/billing" className="db-stat-card rose" style={{ animation: 'slideUp 0.4s ease-out 0.26s both' }}>
+          <Link href="/billing?status=UNPAID_ALL" className="db-stat-card rose" style={{ animation: 'slideUp 0.4s ease-out 0.26s both' }}>
             <div className="db-stat-card-top">
               <span className="db-stat-label">Total Belum Bayar</span>
               <div className="db-stat-icon-wrapper">
@@ -1686,7 +1686,7 @@ export default function Dashboard() {
                 <div style={{ background: 'rgba(244, 63, 94, 0.08)', border: '1px solid rgba(244, 63, 94, 0.2)', borderRadius: 10, padding: '0.5rem', textAlign: 'center' }}>
                   <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', display: 'block' }}>Belum Tertagih</span>
                   <strong style={{ fontSize: '0.88rem', color: '#fb7185', display: 'block', marginTop: 2 }}>
-                    {formatCompactRupiah(stats.totalUnpaidAmount)}
+                    {formatCompactRupiah(stats.unpaidThisMonth)}
                   </strong>
                 </div>
               </div>

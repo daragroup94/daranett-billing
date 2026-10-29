@@ -100,10 +100,24 @@ export default function BillingPage() {
       const qSearch = params.get('search');
       const qMonth = params.get('month');
       const qPay = params.get('pay');
+      const qStatus = params.get('status');
 
-      const currentVal = new Date().toISOString().substring(0, 7);
+      const dNow = new Date();
+      const currentVal = `${dNow.getFullYear()}-${String(dNow.getMonth() + 1).padStart(2, '0')}`;
       
-      if (qMonth) {
+      if (qStatus) {
+        setStatusFilter(qStatus);
+        if (qStatus === 'UNPAID_ALL') {
+          setMonthFilter('');
+          setGenerateMonth(currentVal);
+        } else if (qMonth) {
+          setMonthFilter(qMonth);
+          setGenerateMonth(qMonth);
+        } else {
+          setMonthFilter(currentVal);
+          setGenerateMonth(currentVal);
+        }
+      } else if (qMonth) {
         setMonthFilter(qMonth);
         setGenerateMonth(qMonth);
       } else {
@@ -482,7 +496,7 @@ export default function BillingPage() {
       <section className="dashboard-grid">
         <div className="stat-card purple">
           <div className="stat-header">
-            <span>Total Tagihan ({monthFilter || 'Bulan Ini'})</span>
+            <span>Total Tagihan ({monthFilter || 'Semua Bulan'})</span>
             <div className="stat-icon"><Receipt size={20} /></div>
           </div>
           <div className="stat-value" style={{ fontSize: '1.8rem' }}>{formatRupiah(totalAmount)}</div>
